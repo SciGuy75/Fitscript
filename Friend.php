@@ -12,7 +12,7 @@
 //         $this->FriendName = $FriendFirstName + " " + $FriendLastName;
 //         $this->Steps = $Steps;
 //     }
-
+//djfkdjkjd
     function Friends()
     {
         require_once 'login.php'; 
