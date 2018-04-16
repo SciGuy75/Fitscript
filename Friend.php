@@ -21,6 +21,7 @@
         if ($conn->connect_error) 
             die($conn->connect_error);
         $userID = $_SESSION['userID'];
+
         $query  = "Select 
                 f.UserID,
                 f.FriendID, 
@@ -36,6 +37,7 @@
                 s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) and now() OR
                 s.DateUpdated is null";
         $results = $conn->query($query); 
+  
 
         if (!$results) die ("Database access failed: " . $conn->error);
         
