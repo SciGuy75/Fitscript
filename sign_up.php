@@ -1,7 +1,7 @@
 <?php
 $error = $userName = $password = "";
 require_once 'login.php';
-//session_start();
+session_start();// uncommented this out as it is needed to check $_SESSION
 if(isset($_SESSION['isAdmin']))
 {
     routeUser();
