@@ -25,14 +25,32 @@ _end;
 }
 
 else {
+  $currentPage = basename($_SERVER['PHP_SELF']);
+  if($currentPage == "sign_up.php")
+  {
+    $homeColor = "w3-hide-small w3-hover-white";
+    $loginColor = "w3-hide-small w3-hover-white";
+    $signUpColor = "w3-white";
+  }
+  else if($currentPage == "login_page.php")
+      {
+          $homeColor = "w3-hide-small w3-hover-white";
+          $loginColor = "w3-white";
+          $signUpColor = "w3-hide-small w3-hover-white";
+      }
+      else 
+      {
+          $homeColor = "w3-white";
+          $loginColor = "w3-hide-small w3-hover-white";
+          $signUpColor = "w3-hide-small w3-hover-white";
+      }
     echo <<< _end
-<!-- Navbar -->
 <div class="w3-top">
   <div class="w3-bar w3-red w3-card w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="landingpage.php" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
-    <a href="login_page.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
-    <a href="sign_up.php" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Signup</a>
+    <a href="landingpage.php" class="w3-bar-item w3-button w3-padding-large $homeColor">Home</a>
+    <a href="login_page.php"  class="w3-bar-item w3-button w3-padding-large $loginColor">Login</a>
+    <a href="sign_up.php"     class="w3-bar-item w3-button w3-padding-large $signUpColor">Signup</a>
   </div>
 
   <!-- Navbar on small screens -->
