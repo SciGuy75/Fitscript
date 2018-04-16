@@ -8,25 +8,28 @@ if(isset($_SESSION['isAdmin']))
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
-{          
+{
     if(isset($_POST['username'])) $username = sanitizeString($_POST['username']);
     if(isset($_POST['password'])) $password = sanitizeString($_POST['password']);
-        
+
     $token = SaltPswd($password);
     $db_connect = new mysqli($hn, $un, $pw, $db);
-    //if($db_connect->connect_error) die( echo $db_connect->connect_error;);    
-   
-    $query = "select * from Users where UserName = '$username' and password = '$token'";
-    
-    $result = $db_connect->query($query);
-   
-    $user = $result->fetch_array(MYSQLI_ASSOC);
+    //if($db_connect->connect_error) die( echo $db_connect->connect_error;);
 
+   $query = "select *
+           from Users
+           where UserName = '$username' and
+           Password = '$token'";
+    //echo $query;
+    $result = $db_connect->query($query);
+    //echo $result;
+    $user = $result->fetch_array(MYSQLI_ASSOC);
+    //echo $user['Password'];
     $result->close();
     $db_connect->close();
 
-     if($user != "" && $user['password']== $token) 
-     {              
+     if($user != "" && $user['Password']== $token)
+     {
          //session_start();
          $_SESSION['username'] = $username;
          $_SESSION['userID'] = $user['UserID'];
@@ -34,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
          $_SESSION['FirstName'] = $user['FirstName'];
          $_SESSION['LastName'] = $user['LastName'];
          $_SESSION['isAdmin'] = $user['IsAdmin'];
-         routeUser();                  
+         routeUser();
      }
      else
      {
@@ -56,7 +59,7 @@ function routeUser()
     {
         header('Location: user_page.php');
         exit();
-    }    
+    }
 }
 
 function SaltPswd($p)
@@ -90,14 +93,14 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     <div class="w3-twothird">
       <h1>Log In<?php $error ?></h1>
       <h5 class="w3-padding-32">
-          
+
           <p><label>Username: </label>
             <input type="text" name="username" value=<?php $username ?>> <br></p>
             <p><label>Password: </label>
             <input type="text" name="password" value=<?php $password ?>> <br></p>
-           
+
             <p><input type="submit" value="Log in"></p>
-           
+
         </h5>
 
       <p class="w3-text-grey"><p style="font-style:italic">
@@ -124,11 +127,10 @@ function myFunction() {
     var x = document.getElementById("navDemo");
     if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
-    } else { 
+    } else {
         x.className = x.className.replace(" w3-show", "");
     }
 }
 </script>
 </body>
 </html>
-
