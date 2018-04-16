@@ -53,7 +53,9 @@ require_once 'session_check.php';
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
         <img src="#" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">32 min</span>
-        <h4>User Name</h4><br>
+        <h4>
+                <?php //echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?>
+                <?php echo  $_SESSION['username'] ?>
         <p>Current Updates + Graphs go here</p>
         <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
         <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
