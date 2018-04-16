@@ -5,14 +5,18 @@
 <?php require_once 'stylesheets.php' ?>
 
 <style>
-html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
+    html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </style>
 <body class="w3-theme-l5">
 
 <!-- Navbar -->
-<?php require_once 'navbar.php' ?>
-<?php require_once 'Friend.php' ?>
-<?php require_once 'session_check.php' ?>
+
+<?php 
+//require_once 'login.php';
+require_once 'navbar.php'; 
+require_once 'Friend.php'; 
+require_once 'session_check.php'; 
+?>
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
   <!-- The Grid -->
