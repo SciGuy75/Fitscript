@@ -91,7 +91,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <div class="w3-row-padding w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-twothird">
-      <h1>Log In<?php $error ?></h1>
+      <h1>Log In</h1>
       <h5 class="w3-padding-32">
 
           <p><label>Username: </label>
@@ -102,7 +102,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
             <p><input type="submit" value="Log in"></p>
 
         </h5>
-
+		<span style="color:red"><?php echo $error ?></span>
       <p class="w3-text-grey"><p style="font-style:italic">
             Placeholder for "forgot password" link<br><br>
             Placeholder for "create account" link
