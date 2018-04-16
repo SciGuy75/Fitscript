@@ -16,21 +16,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
     $db_connect = new mysqli($hn, $un, $pw, $db);
     //if($db_connect->connect_error) die( echo $db_connect->connect_error;);    
    
-   $query = "select * 
-           from Users 
-           where UserName = '$username' and
-           Password = '$token'";
-    //echo $query;
+    $query = "select * from Users where UserName = '$username' and password = '$token'";
+    
     $result = $db_connect->query($query);
-    //echo $result;
+   
     $user = $result->fetch_array(MYSQLI_ASSOC);
-    echo $user['Password'];
+
     $result->close();
     $db_connect->close();
 
-     if($user != "" && $user['Password']== $token) 
+     if($user != "" && $user['password']== $token) 
      {              
-         session_start();
+         //session_start();
          $_SESSION['username'] = $username;
          $_SESSION['userID'] = $user['UserID'];
          $_SESSION['pswd_token'] = $user['password'];//$token;
