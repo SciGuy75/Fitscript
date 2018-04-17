@@ -81,7 +81,12 @@ require_once 'session_check.php';
           <p>Friend Request</p>
           <!-- <img src="#" alt="friendslistAvatar" style="width:50%"><br> -->
           <span>Friends</span>
-          <?php Friends() ?>
+          <?php $friend = new Friend(-1,"","",-1);
+                $FriendList = $friend->Friends();
+                foreach($FriendList as $f)
+                {
+                  echo "<p>".$f->FriendFirstName." ".$f->FriendLastName." ".$f->Steps."</p>";
+                } ?>
           <div class="w3-row w3-opacity">
             <div class="w3-half">
               <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
@@ -93,13 +98,10 @@ require_once 'session_check.php';
         </div>
       </div>
       <br>
-      
     <!-- End Right Column -->
     </div>
-    
   <!-- End Grid -->
   </div>
-  
 <!-- End Page Container -->
 </div>
 <br>

@@ -1,37 +1,61 @@
 <?php
 $error = $userName = $password = "";
 require_once 'login.php';
-session_start();// uncommented this out as it is needed to check $_SESSION
+require_once 'User.php';
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 if(isset($_SESSION['isAdmin']))
 {
     routeUser();
 }
-
-if($_SERVER["REQUEST_METHOD"] == "GET")
+$userName = "bb";
+$newUser = new User($userName);
+if($_SERVER["REQUEST_METHOD"] == "POST")
 {          
-    if(isset($_GET['username'])) $username = sanitizeString($_GET['username']);
-    if(isset($_GET['password'])) $password = sanitizeString($_GET['password']);
+    //if(isset($_GET['username'])) $username = sanitizeString($_GET['username']);
+    //if(isset($_GET['password'])) $password = sanitizeString($_GET['password']);
         
-    $token = SaltPswd($password);
-    $user = ExecuteQuery($token, $username);
+    //$token = SaltPswd($password);
+    //$user = ExecuteQuery($token, $username);
 
-     if($user['password']== $token) 
-     {              
-         //session_start();
-         $_SESSION['username'] = $username;
-         $_SESSION['userID'] = $user['UserID'];
-         $_SESSION['pswd_token'] = $user['password'];//$token;
-         $_SESSION['FirstName'] = $user['FirstName'];
-         $_SESSION['LastName'] = $user['LastName'];
-         $_SESSION['isAdmin'] = $user['IsAdmin'];
-         routeUser();                  
-     }
-     else
-     {
-         $error = "The username / password combination is not correct.";
-     }
+    //  if($user['password']== $token) 
+    //  {              
+    //      //session_start();
+    //      $_SESSION['username'] = $username;
+    //      $_SESSION['userID'] = $user['UserID'];
+    //      $_SESSION['pswd_token'] = $user['password'];//$token;
+    //      $_SESSION['FirstName'] = $user['FirstName'];
+    //      $_SESSION['LastName'] = $user['LastName'];
+    //      $_SESSION['isAdmin'] = $user['IsAdmin'];
+    //      routeUser();                  
+    //  }
+    //  else
+    //  {
+    //      $error = "The username / password combination is not correct.";
+    //  }
+    if(isset($_GET['fname']) && isset($_GET['lname']) && isset($_GET['username']) &&
+         isset($_GET['password']) && isset($_GET['birthday']) && isset($_GET['gender']) &&
+         isset($_GET['phone']) && isset($_GET['heightFeet']) && isset($_GET['heightInches']) &&
+         isset($_GET['weight']))
+    {
+        $username = sanitizeString($_GET['username']);
+        $newUser = new User($username);
+        if($newUser->CheckUserName())
+        {
+            $newUser->FirstName = sanitizeString($_GET['fname']);
+            $newUser->LastName = sanitizeString($_GET['lname']);
+            $newUser->UserName = sanitizeString($_GET['username']);
+            $newUser->PasswordToken = SaltPswd(sanitizeString($_GET['password']));
+            $newUser->Birthday = sanitizeString($_GET['birthday']);
+            $newUser->Gender = sanitizeString($_GET['gender']);
+            $newUser->Phone = sanitizeString($_GET['Phone']);
+            $newUser->Height = sanitizeString($_GET['heightFeet']).".".sanitizeString($_GET['heightInches']);
+            $newUser->Weight = sanitizeString($_GET['weight']);
+            $newUser->CreateAccount();
+        }
 }
-
+}
 function sanitizeString($var)
   {
     $var = stripslashes($var);
@@ -67,6 +91,10 @@ function SaltPswd($p)
 body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
 .fa-heartbeat,.fa-coffee {font-size:200px}
+table td { 
+  display: table-cell;
+  vertical-align: baseline; 
+}
 </style>
 <body>
 
@@ -74,35 +102,53 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <?php require_once 'navbar.php' ?>
 
 <!-- First Grid -->
-<form method="get" action="sign_up.php">
+<form method="post" action="sign_up.php">
 <div class="w3-row-padding w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-twothird">
       <h1>Sign Up<?php $error ?></h1>
       <h5 class="w3-padding-32">
-          <table>
-          <tr>
-          <td><p><label>First Name: </label></td>
-            <td><input type="text" name="fname" value=<?php $firstname ?>> <br></p></td></tr>
-            <tr><td><p><label>Last Name: </label></td>
-            <td><input type="text" name="lname" value=<?php $lastname ?>> <br></p></td></tr>
-            <tr><td><p><label>Username: </label></td>
-            <td><input type="text" name="username" value=<?php $username ?>> <br></p></td></tr>
-            <tr><td><p><label>Password: </label></td>
-            <td><input type="password" name="password" value=<?php $password ?>> <br></p></td></tr>
-            <tr><td><p><label>Birthday: </label></td>
-            <td><input type="date" name="birthday" value=<?php $birthday ?>> <br></p></td></tr>
-            <tr><td><p><label>Gender: </label></td>
-	    <td><input type="radio" name="gender" value="male" checked> Male
-            <input type="radio" name="gender" value="female"> Female
-            <input type="radio" name="gender" value="other"> Other<br></p></td></tr>
-            <tr><td><p><label>Phone: </label></td>
-            <td><input type="text" size="10" name="phone" value=<?php $phone ?>> <br></p></td></tr>
-            <tr><td><p><label>Height: </label></td>
-            <td><input type="text" name="height" value=<?php $height ?>>(in inches) <br></p></td></tr>
-            <tr><td><p><label>Weight: </label></td>
-            <td><input type="text" name="weight" value=<?php $weight ?>>(in lbs) <br></p></td></tr></table>
-            <tr><td><p><input type="submit" value="Sign Up"></p>
+          <table class="w3-table">
+                <tr>
+                    <td><label>First Name: </label></td>
+                    <td><input type="text" name="fname" value="<?php $newUser->FirstName ?>"></td>
+                </tr>
+                <tr>
+                    <td><label>Last Name: </label></td>
+                    <td><input type="text" name="lname" value=<?php  $newUser->LastName ?>></td>
+                </tr>
+                <tr>
+                    <td><label>Username: </label></td>
+                    <td><input type="text" name="username" value="<?php echo $newUser->UserName; ?>"></td>
+                </tr>
+                <tr>
+                    <td><label>Password: </label></td>
+                    <td><input type="password" name="password" value=<?php $password ?>></td>
+                </tr>
+                <tr>
+                    <td><label>Birthday: </label></td>
+                    <td><input type="date" name="birthday" value=<?php $birthday ?>></td>
+                </tr>
+                <tr>
+                    <td><label>Gender: </label></td>
+                    <td><input type="radio" name="gender" value="m" checked> Male &nbsp; &nbsp; &nbsp; &nbsp;
+                    <input type="radio" name="gender" value="f"> Female
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Phone: </label></td>
+                    <td><input type="text" size="20" maxlength=10 name="phone" value=<?php $phone ?>> </td>
+                </tr>
+                <tr>
+                    <td><label>Height: </label></td>
+                    <td><input type="text" size=3 maxlength=1 max=7 name="heightFeet" value=<?php $heightFeet ?>> ' <input type="text" max=12 size=3 maxlength=2 name="heightInches"> "</td>
+                </tr>
+                <tr>
+                    <td><label>Weight: </label></td>
+                    <td><input type="text" size=5 maxlength=4 name="weight" value=<?php $weight ?>> lbs </td>
+                </tr>
+            </table>
+            <p><input class="w3-button w3-red" type="submit" value="Sign Up"></p>
         </h5>
 
       <p class="w3-text-grey"><p style="font-style:italic">
@@ -139,23 +185,23 @@ function myFunction() {
 <?php
 function ExecuteQuery($t,$n)
 {
-    $user = "";
-    if($username != "")
-    {
-    
-    $db_connect = new mysqli($hn, $un, $pw, $db);
-    if($db_connect -> connect_error) die($db_connect -> connect_error);    
-    
-    $query = "select * 
-              from users 
-              where username = '$n' and
-              password = '$t'";
+    //$user = "";
+    // if($n != "")
+    // {
+    //     $db_connect = new mysqli($hn, $un, $pw, $db);
+    //     if($db_connect -> connect_error) die($db_connect -> connect_error);    
+        
+    //     $query = "select * 
+    //             from users 
+    //             where username = '$n' and
+    //             password = '$t'";
 
-    $result = $db_connect->query($query);
-    $user = $result->fetch_array(MYSQLI_ASSOC);
-    $result->close();
-    $db_connect->close();
-    }
-    return $user;
+    //     $result = $db_connect->query($query);
+    //     $user1 = $result->fetch_array(MYSQLI_ASSOC);
+    //     $result->close();
+    //     $db_connect->close();
+    //     return $user1;
+    // }
+    // return null;
 }
 ?>
