@@ -14,7 +14,13 @@ class user
 	function __construct(string $foundUserName)
 	{
 		this->$username = $foundUserName;
-		//database shit
+		
+		require_once 'login.php'; 
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+		
+		
 		return;
 	}
 	
@@ -70,6 +76,7 @@ class Challenge
 	
 	function accept(int UserID, int ChallengeID)
 	{
+		
 		return;
 	}
 	
