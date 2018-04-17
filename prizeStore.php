@@ -2,7 +2,13 @@
 <html>
 <head>
 <title>Prize Store</title></head>
-<?php require_once('navbar.php'); ?>
+
+<?php
+session_start();
+require_once 'navbar.php'; 
+require_once 'stylesheets.php';
+require_once 'session_check.php'; ?>
+
 <body>
 <div style="padding-left:16px">
   <h2 align = center>Script Store</h2>
