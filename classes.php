@@ -14,7 +14,12 @@ class user
 	function __construct(string $foundUserName)
 	{
 		this->$username = $foundUserName;
-		//database shit
+		
+		require_once 'login.php'; 
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+		
 		return;
 	}
 	
@@ -31,7 +36,16 @@ class friend
 	$FriendUserID;
 	$steps;
 	
-	function Friends
+	function __construct(){
+		
+		require_once 'login.php'; 
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+		
+	}
+	
+	function Friends()
 	{
 		//retreieved Friend's usernames
 		//Store all friend user names in array
@@ -48,7 +62,11 @@ class challenger
 	private $challengeID;
 	
 	function __construct($ChallengeID){
-		//retrieve challengers from database/
+		
+		require_once 'login.php'; 
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
 		//
 		return;
 	}
@@ -56,33 +74,25 @@ class challenger
 	function SendChallengeRequest(int challengersIDs, int ChallengeID, string userID)
 	{
 		//challenge friends using their IDs
+		
+		
 		return;
 	}
 }
 
-class Challenge
-{
-	private $ChallengeID;
-	private $ChallengeType;
-	private $status;
-	private $eligible_for_pts;
-	private $points_reward;
-	
-	function accept(int UserID, int ChallengeID)
-	{
-		return;
-	}
-	
-	function decline(int UserID, string UserName, int $ChallengeID)
-	{
-		return;
-	}
-}
 
 class Weight
 {
 	private weight;
 	private date_to;
+	
+	function __construct(){
+		
+		require_once 'login.php'; 
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+	}
 	
 	function weights(int UserID)
 	{
