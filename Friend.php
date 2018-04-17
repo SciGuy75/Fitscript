@@ -76,7 +76,7 @@ class Friend
             }
         return $PendingFriendsList;
     }
-    
+
     function FindFriend($UserName)
     {
         $conn = new mysqli($hn, $un, $pw, $db);
@@ -102,23 +102,50 @@ class Friend
           }
           return null;
     }
-    function SendFriendRequest()
+    function SendFriendRequest($userID, $FriendID)
     {
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+        $query = "INSERT INTO `friends`(`UserID`, `FriendID`) 
+                  VALUES ($userID, $FriendID)";
+        $results = $conn->query($query); 
         return;
     }
 
-    function AcceptFriendRequest()
+    function AcceptFriendRequest($userID, $FriendID)
     {
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+        $query = "UPDATE `friends` 
+                  SET `Status`='Accepted',`UpatedOn`= CURRENT_TIMESTAMP
+                  WHERE `UserID` = $userID and `FriendID` = $FriendID";
+        $results = $conn->query($query); 
         return;
     }
 
     function DeclineFriendRequest()
     {
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+        $query = "UPDATE `friends` 
+                  SET `Status`='Declined',`UpatedOn`= CURRENT_TIMESTAMP
+                  WHERE `UserID` = $userID and `FriendID` = $FriendID";
+        $results = $conn->query($query); 
         return;
     }
     
     function DeleteFriend()
     {
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error) 
+            die($conn->connect_error);
+        $query = "UPDATE `friends` 
+                  SET `Status`='Removed',`UpatedOn`= CURRENT_TIMESTAMP
+                  WHERE `UserID` = $userID and `FriendID` = $FriendID";
+        $results = $conn->query($query); 
         return;
     }
 }
