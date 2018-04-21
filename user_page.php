@@ -29,6 +29,7 @@ require_once 'session_check.php';
          <h4 class="w3-center">My Profile</h4>
          <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
+         <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> <?php echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?></p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> Location</p>
          <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> Birthday/ Other Info</p>
         </div>
