@@ -5,12 +5,13 @@
 
 <?php
 session_start();
-require_once 'navbar.php'; 
+require_once 'navbar.php';
 require_once 'stylesheets.php';
 require_once 'session_check.php'; ?>
 
 <body class = "w3-theme">
-<div style="padding-left:16px">
+<div style="padding-top: 50px; padding-left: 16px">
+
   <h2 align = center>Script Store</h2>
   <p align = center>Earned a prize? Redeem it here!!</p>
 </div>
@@ -26,5 +27,3 @@ require_once 'session_check.php'; ?>
 </table>
 </body>
 </html>
-
-
