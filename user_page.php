@@ -2,7 +2,10 @@
 <html>
 <title>User</title>
 <meta charset="UTF-8">
-<?php require_once 'stylesheets.php' ?>
+<?php
+    session_start();
+    require_once 'stylesheets.php'
+?>
 
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
@@ -12,10 +15,18 @@
 <!-- Navbar -->
 
 <?php
+
 //require_once 'login.php';
 require_once 'navbar.php';
 require_once 'Friend.php';
+require_once 'User.php';
 require_once 'session_check.php';
+echo $_SESSION['username'];
+$user_class = new user($_SESSION['username']);
+echo $user_class->UserName;
+
+$user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
+
 ?>
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
@@ -31,7 +42,7 @@ require_once 'session_check.php';
          <hr>
          <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> <?php echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?></p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> Location</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> Birthday/ Other Info</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i><?php echo  $user_class->Birthday ?></p>
         </div>
       </div>
       <br>

@@ -1,6 +1,7 @@
 <?php
 $error = $userName = $password = "";
 require_once 'login.php';
+require_once 'User.php';
 session_start();
 if(isset($_SESSION['isAdmin']))
 {
@@ -34,10 +35,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
      {
          //session_start();
          $_SESSION['username'] = $username;
-         $_SESSION['pswd_token'] = $user['password'];//$token;
+         $_SESSION['pswd_token'] = $user['Password'];//$token;
          $_SESSION['FirstName'] = $user['FirstName'];
          $_SESSION['LastName'] = $user['LastName'];
          $_SESSION['isAdmin'] = $user['IsAdmin'];
+         $user_class = new user($username);
+         $user_class->GetInfo($username,$user['Password']);
          routeUser();
      }
      else

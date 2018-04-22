@@ -10,15 +10,15 @@ class user
     public $Birthday = "";
     public $JoinDate = "";
     public $Phone = "";
-    public $weight = "";
-	public $points = 0;
+	public $Points = 0;
 	public $Gender = "";
-	public $Height = "";
+	public $Height = 0;
+    public $Weight = 0;
 	public $isAdmin = false;
 
 	function __construct($foundUserName)
 	{
-		$this->username = $foundUserName;
+		$this->UserName = $foundUserName;
 	}
 
     function CheckUserName()
@@ -61,7 +61,7 @@ class user
                         `Birthday`,
                         `Gender`,
                         `Height`,
-                        `password`
+                        `Password`
                     )
                   VALUES (
                       '$this->UserName',
@@ -84,5 +84,42 @@ class user
 
 		return $returnResult;
 	}
+    function GetInfo($username,$pwtoken){
+        require 'login.php';
+        $mysqli = new mysqli($hn, $un, $pw, $db);
+        if ($mysqli->connect_error) {
+            die('Connect Error: ' . $mysqli->connect_error);
+        }
+
+
+        $query = "select *
+               from Users
+               where UserName = '$username' and
+               Password = '$pwtoken'";
+        //echo $query;
+        $result = $mysqli->query($query);
+        //echo $result;
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+
+
+        if( $row["UserName"]!= "" && $row['Password']== $pwtoken)
+        {
+            $this->FirstName = $row["FirstName"];
+            $this->LastName = $row["LastName"];
+            $this->UserName = $row["UserName"];
+            $this->PasswordToken = $row["Password"];
+            $this->Birthday = $row["Birthday"];
+            $this->Gender = $row["Gender"];
+            //$this->Phone = $row["Phone"];
+            $this->Height = $row["Height"];
+            $this->Weight = $row["Weight"];
+            $this->Points = $row["Points"];
+            $this->IsAdmin = $row["IsAdmin"];
+
+            $result->close();
+            $mysqli->close();
+        }
+        return;
+    }
 }
 ?>

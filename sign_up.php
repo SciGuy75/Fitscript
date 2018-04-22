@@ -63,7 +63,6 @@ table td {
                 $newUser->Height = sanitizeString($_REQUEST['heightFeet']).".".sanitizeString($_REQUEST['heightInches']);
                 $newUser->Weight = sanitizeString($_POST['weight']);
                 $isnewUsersSignedup = $newUser->CreateAccount();
-
                 $_SESSION['username'] = $newUser->UserName;
                 $_SESSION['pswd_token'] = $newUser->PasswordToken;//$token;
                 $_SESSION['FirstName'] = $newUser->FirstName;
