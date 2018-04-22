@@ -35,6 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
      {
          //session_start();
          $_SESSION['username'] = $username;
+         $_SESSION['userID'] = $user['UserID'];
          $_SESSION['pswd_token'] = $user['Password'];//$token;
          $_SESSION['FirstName'] = $user['FirstName'];
          $_SESSION['LastName'] = $user['LastName'];

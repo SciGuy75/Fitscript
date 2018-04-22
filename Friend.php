@@ -18,12 +18,8 @@ class Friend
     }
     function Friends()
     {
-        require 'login.php';
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error)
-            die($conn->connect_error);
-
-        $query  = 'SELECT
+        $userID = $_SESSION['userID'];
+        $query  = "SELECT
                         u.UserName,
                         f.FriendID,
                         u.FirstName,
@@ -33,19 +29,18 @@ class Friend
                         join Users u on u.UserID = f.FriendID
                         left join Steps s on s.UserID = u.UserID
                     WHERE
-                        f.UserID = "$userID" AND
-                        f.status = "Accepted" AND
-                        s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) AND now() OR
-                        s.DateUpdated is null';
-        $results = $conn->query($query);
-        if (!$results) die ("Database access failed: " . $conn->error);
-
+                        f.UserID = '$userID' AND
+                        f.status = 'Accepted' AND
+                        (s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) AND now() OR
+                        s.DateUpdated is null)";
+       
+        $results = $this->SubmitQuery($query);
         while($result = $results->fetch_array(MYSQLI_ASSOC))
         {
             $FriendList[] = new Friend($result['FriendID'], $result['UserName'], $result['FirstName'], $result['LastName'], $result['steps']);
         }
         $results->close();
-        $conn->close();
+        
         return $FriendList;
     }
 
@@ -145,6 +140,18 @@ class Friend
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
         $results = $conn->query($query);
         return;
+    }
+
+    function SubmitQuery($query)
+    {
+        require 'login.php';
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if ($conn->connect_error)
+            die($conn->connect_error);
+        $results = $conn->query($query);
+        if (!$results) die ("Database access failed: " . $conn->error);
+        $conn->close();
+         return $results;
     }
 }
 
