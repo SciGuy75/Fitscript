@@ -18,9 +18,9 @@ class user
 
 	function __construct($foundUserName)
 	{
-		$this->username = $foundUserName;		
+		$this->username = $foundUserName;
 	}
-    
+
     function CheckUserName()
     {
         require "login.php";
@@ -36,7 +36,7 @@ class user
         $results->close();
         $conn->close();
 
-        return  $returnResult;        
+        return  $returnResult;
     }
     function CreateAccount()
 	{
@@ -50,30 +50,29 @@ class user
         echo "yes";
         $query = "INSERT INTO `users`
                     (
-                        `UserName`, 
-                        `FirstName`, 
-                        `LastName`, 
-                        `Birthday`, 
-                        `Gender`, 
-                        `Height`, 
+                        `UserName`,
+                        `FirstName`,
+                        `LastName`,
+                        `Birthday`,
+                        `Gender`,
+                        `Height`,
                         `password`
-                    ) 
+                    )
                   VALUES (
-                      $this->UserName,
-                      $this->FirstName,
-                      $this->LastName,
-                      $this->Birthday,
-                      $this->Gender,
-                      $this->Height,
-                      $this->PasswordToken
+                      '$this->UserName',
+                      '$this->FirstName',
+                      '$this->LastName',
+                      '$this->Birthday',
+                      '$this->Gender',
+                      '$this->Height',
+                      '$this->PasswordToken'
                         )";
         if ($conn->query($query) == True){
             $returnResult = true; //no other users with that name
-            echo "True";
+
         }
         else{
             $returnResult = false;
-            echo $conn->query($query)."false";
             return $returnResult;
         }
         $conn->close();

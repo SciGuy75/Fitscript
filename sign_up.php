@@ -1,86 +1,6 @@
 <!DOCTYPE html>
 <html>
 <title>Sign Up Page</title>
-<?php
-$error = $userName = $password = "";
-require_once 'login.php';
-require_once 'User.php';
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-if(isset($_SESSION['isAdmin']))
-{
-    routeUser();
-}
-$userName = "bb";
-$newUser = new User($userName);
-$UserNameTaken = 0;
-$isnewUsersSignedup = 0;
-$emptyfield = 0;
-if($_SERVER["REQUEST_METHOD"] == "POST")
-{          
-    if(isset($_REQUEST['fname']) && isset($_REQUEST['lname']) && isset($_REQUEST['username']) &&
-        isset($_REQUEST['password'])  && isset($_REQUEST['gender']) &&  $_REQUEST['birthday'] != null &&
-        isset($_REQUEST['phonenumber']) && isset($_REQUEST['heightFeet']) && isset($_REQUEST['heightInches']) &&
-        isset($_REQUEST['weight']))
-    {
-        $username = sanitizeString($_REQUEST['username']);
-        $newUser = new user($username);
-        if($newUser->CheckUserName())
-        {
-            $newUser->FirstName = sanitizeString($_REQUEST['fname']);
-            $newUser->LastName = sanitizeString($_REQUEST['lname']);
-            $newUser->UserName = sanitizeString($_REQUEST['username']);
-            $newUser->PasswordToken = SaltPswd(sanitizeString($_REQUEST['password']));
-            $newUser->Birthday = sanitizeString($_REQUEST['birthday']);
-            $newUser->Gender = strtoupper(sanitizeString($_REQUEST['gender']));
-            $newUser->Phone = sanitizeString($_REQUEST['phonenumber']);
-            $newUser->Height = sanitizeString($_REQUEST['heightFeet']).".".sanitizeString($_REQUEST['heightInches']);
-            $newUser->Weight = sanitizeString($_REQUEST['weight']);
-            $isnewUsersSignedup = $newUser->CreateAccount();
-            $_SESSION['username'] = $newUser->UserName;
-            $_SESSION['pswd_token'] = $newUser->PasswordToken;//$token;
-            $_SESSION['FirstName'] = $newUser->FirstName;
-            $_SESSION['LastName'] = $newUser->LastName;
-            $_SESSION['isAdmin'] = 0;
-            if(isset($_SESSION['isAdmin']))
-            {
-                routeUser();
-            }
-        }
-        else{
-            $UserNameTaken = True;
-        }
-    }
-    else{
-        $emptyfield = 1;
-    }
-}
-function sanitizeString($var)
-  {
-    $var = stripslashes($var);
-    $var = strip_tags($var);
-    $var = htmlentities($var);
-    return $var;
-  }
-function routeUser()
-{
-    //session_start();
-    if(isset($_SESSION['isAdmin'] ))
-    {
-        header('Location: user_page.php');
-        exit();
-    }
-}
-
-function SaltPswd($p)
-{
-    $salt1 = "qm&h*";
-    $salt2 = "pg!@";
-    return hash('ripemd128', "$salt1$p$salt2");
-}
-
-?>
 
 <meta charset="UTF-8">
 <?php require_once 'stylesheets.php' ?>
@@ -88,9 +8,9 @@ function SaltPswd($p)
 body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
 .fa-heartbeat,.fa-coffee {font-size:200px}
-table td { 
+table td {
   display: table-cell;
-  vertical-align: baseline; 
+  vertical-align: baseline;
 }
 </style>
 <body>
@@ -105,6 +25,93 @@ table td {
     <div class="w3-twothird">
       <h1>Sign Up<?php $error ?></h1>
       <h5 class="w3-padding-32">
+<?php
+    $error = $userName = $password = "";
+    require_once 'login.php';
+    require_once 'User.php';
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['isAdmin']))
+    {
+        routeUser();
+    }
+    $userName = "bb";
+    $newUser = new User($userName);
+    $UserNameTaken = 0;
+    $isnewUsersSignedup = 0;
+    $emptyfield = 0;
+    //echo "1";
+    if($_SERVER["REQUEST_METHOD"] == "POST")
+    {
+        //echo "2";
+
+        if(isset($_REQUEST['fname']) && isset($_REQUEST['lname']) && isset($_REQUEST['username']) &&
+            isset($_REQUEST['password'])  && isset($_REQUEST['gender']) &&  $_REQUEST['birthday'] != null &&
+            isset($_REQUEST['phonenumber']) && isset($_REQUEST['heightFeet']) && isset($_REQUEST['heightInches']) &&
+            isset($_REQUEST['weight']))
+        {
+            //echo "3";
+            $username = sanitizeString($_REQUEST['username']);
+            $newUser = new user($username);
+            if($newUser->CheckUserName())
+            {
+                //echo "4";
+                $newUser->FirstName = sanitizeString($_REQUEST['fname']);
+                $newUser->LastName = sanitizeString($_REQUEST['lname']);
+                $newUser->UserName = sanitizeString($_REQUEST['username']);
+                $newUser->PasswordToken = SaltPswd(sanitizeString($_REQUEST['password']));
+                $newUser->Birthday = sanitizeString($_REQUEST['birthday']);
+                $newUser->Gender = strtoupper(sanitizeString($_REQUEST['gender']));
+                $newUser->Phone = sanitizeString($_REQUEST['phonenumber']);
+                $newUser->Height = sanitizeString($_REQUEST['heightFeet']).".".sanitizeString($_REQUEST['heightInches']);
+                $newUser->Weight = sanitizeString($_POST['weight']);
+                $isnewUsersSignedup = $newUser->CreateAccount();
+                //echo $isnewUsersSignedup;
+                $_SESSION['username'] = $newUser->UserName;
+                $_SESSION['pswd_token'] = $newUser->PasswordToken;//$token;
+                $_SESSION['FirstName'] = $newUser->FirstName;
+                $_SESSION['LastName'] = $newUser->LastName;
+                $_SESSION['isAdmin'] = 0;
+                if(isset($_SESSION['isAdmin']))
+                {
+                    //echo "5";
+                    routeUser();
+                }
+            }
+            else{
+                $UserNameTaken = True;
+            }
+        }
+        else{
+            $emptyfield = 1;
+        }
+    }
+    function sanitizeString($var)
+      {
+        $var = stripslashes($var);
+        $var = strip_tags($var);
+        $var = htmlentities($var);
+        return $var;
+      }
+    function routeUser()
+    {
+        //session_start();
+        if(isset($_SESSION['isAdmin'] ))
+        {
+            header('Location: user_page.php');
+            exit();
+        }
+    }
+
+    function SaltPswd($p)
+    {
+        $salt1 = "qm&h*";
+        $salt2 = "pg!@";
+        return hash('ripemd128', "$salt1$p$salt2");
+    }
+
+?>
           <table class="w3-table">
                 <tr>
                     <td><label>First Name: </label></td>
@@ -183,7 +190,7 @@ function myFunction() {
     var x = document.getElementById("navDemo");
     if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
-    } else { 
+    } else {
         x.className = x.className.replace(" w3-show", "");
     }
 }
@@ -197,9 +204,9 @@ function ExecuteQuery($t,$n)
     // if($n != "")
     // {
     //     $db_connect = new mysqli($hn, $un, $pw, $db);
-    //     if($db_connect -> connect_error) die($db_connect -> connect_error);    
-    //     $query = "select * 
-    //             from users 
+    //     if($db_connect -> connect_error) die($db_connect -> connect_error);
+    //     $query = "select *
+    //             from users
     //             where username = '$n' and
     //             password = '$t'";
     //     $result = $db_connect->query($query);
