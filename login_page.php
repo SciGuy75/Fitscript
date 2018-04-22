@@ -27,7 +27,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
     $result = $mysqli->query($query);
     //echo $result;
     $user = $result->fetch_array(MYSQLI_ASSOC);
-    //echo $user['Password'];
     $result->close();
     $mysqli->close();
 
