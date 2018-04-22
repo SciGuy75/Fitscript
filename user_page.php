@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>User</title>
+<title>UserPage</title>
 <meta charset="UTF-8">
 <?php
     session_start();
@@ -21,12 +21,8 @@ require_once 'navbar.php';
 require_once 'Friend.php';
 require_once 'User.php';
 require_once 'session_check.php';
-echo $_SESSION['username'];
 $user_class = new user($_SESSION['username']);
-echo $user_class->UserName;
-
 $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
-
 ?>
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
@@ -37,12 +33,21 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
-         <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-         <hr>
-         <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> <?php echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?></p>
-         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> Location</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i><?php echo  $user_class->Birthday ?></p>
+            <h4 class="w3-center">My Profile</h4>
+            <!-- <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p> -->
+            <hr>
+            <p><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>
+                <?php echo ucwords($_SESSION['FirstName']) . " "
+                    . ucwords($_SESSION['LastName']);
+                ?>
+            </p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> Location</p>
+            <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>
+            <?php
+                $Date = new DateTime($user_class->Birthday);
+                echo $Date->format('m-d-Y');
+            ?>
+            </p>
         </div>
       </div>
       <br>
@@ -63,11 +68,12 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
     <div class="w3-col m7">
 
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src="#" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        <!-- <img src="#" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px"> -->
         <span class="w3-right w3-opacity"></span>
-        <h4>
+        <h3><b>
                 <?php //echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?>
-                <?php echo  $_SESSION['username'] ?>
+                <?php echo  "Hi, ".$user_class->UserName; ?>
+        <b></h3>
         <p>Current Updates + Graphs go here</p>
         <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
         <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
@@ -80,36 +86,43 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
     <div class="w3-col m2">
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
-          <p>Current Challenges</p>
+          <p><h4>Current Challenges</h4></p>
+          <hr>
           <p><strong>Challenger</strong></p>
           <p>Challenge</p>
+          <hr>
           <p><button class="w3-button w3-block w3-theme-l4">more</button></p>
         </div>
       </div>
       <br>
 
-      <div class="w3-card w3-round w3-white w3-center">
+    <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
-          <p>Friend Request</p>
-          <!-- <img src="#" alt="friendslistAvatar" style="width:50%"><br> -->
-          <span>Friends</span>
-          <?php $friend = new Friend(-1,"","",-1);
+
+            <!-- <img src="#" alt="friendslistAvatar" style="width:50%"><br> -->
+            <span><h3><b>Friends<b></h3></span>
+            <?php $friend = new Friend(-1,"","",-1,0);
                 $FriendList = $friend->Friends();
                 foreach($FriendList as $f)
                 {
                   echo "<p>".$f->FriendFirstName." ".$f->FriendLastName." ".$f->Steps."</p>";
-                } ?>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
+                }
+            ?>
+            <hr>
+            <h4><p><b>Friend Request</b></p></h4>
+            <hr>
+
+            <div class="w3-row w3-opacity">
+                <div class="w3-half">
+                  <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
+                </div>
+                <div class="w3-half">
+                    <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+                </div>
             </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-            </div>
-          </div>
         </div>
-      </div>
-      <br>
+    </div>
+    <br>
     <!-- End Right Column -->
     </div>
   <!-- End Grid -->
