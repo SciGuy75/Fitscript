@@ -62,6 +62,7 @@ class user
                         `Gender`,
                         `Height`,
                         `Password`
+                        `Phone`
                     )
                   VALUES (
                       '$this->UserName',
@@ -71,6 +72,7 @@ class user
                       '$this->Gender',
                       '$this->Height',
                       '$this->PasswordToken'
+                      '$this->Phone'
                         )";
         if ($conn->query($query) == True){
             $returnResult = true; //no other users with that name
@@ -109,8 +111,13 @@ class user
             $this->UserName = $row["UserName"];
             $this->PasswordToken = $row["Password"];
             $this->Birthday = $row["Birthday"];
+
+            //$this->$JoinDate = $row["JoinDate"];
+            //not sure why but date isnt working
             $this->Gender = $row["Gender"];
-            //$this->Phone = $row["Phone"];
+
+            $this->Phone = $row["Phone"];
+
             $this->Height = $row["Height"];
             $this->Weight = $row["Weight"];
             $this->Points = $row["Points"];
