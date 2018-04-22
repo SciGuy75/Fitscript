@@ -11,14 +11,14 @@
 
 <!-- Navbar -->
 
-<?php 
+<?php
 //require_once 'login.php';
-require_once 'navbar.php'; 
-require_once 'Friend.php'; 
-require_once 'session_check.php'; 
+require_once 'navbar.php';
+require_once 'Friend.php';
+require_once 'session_check.php';
 ?>
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
   <!-- The Grid -->
   <div class="w3-row">
     <!-- Left Column -->
@@ -35,7 +35,7 @@ require_once 'session_check.php';
         </div>
       </div>
       <br>
-      
+
       <!-- Alert Box -->
       <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
         <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
@@ -44,27 +44,27 @@ require_once 'session_check.php';
         <p><strong>Alerts</strong></p>
         <p>Alerts go here</p>
       </div>
-    
+
     <!-- End Left Column -->
     </div>
-    
+
     <!-- Middle Column -->
     <div class="w3-col m7">
 
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
         <img src="#" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">32 min</span>
+        <span class="w3-right w3-opacity"></span>
         <h4>
                 <?php //echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?>
                 <?php echo  $_SESSION['username'] ?>
         <p>Current Updates + Graphs go here</p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
-      </div> 
-      
+        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
+        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
+      </div>
+
     <!-- End Middle Column -->
     </div>
-    
+
     <!-- Right Column -->
     <div class="w3-col m2">
       <div class="w3-card w3-round w3-white w3-center">
@@ -76,7 +76,7 @@ require_once 'session_check.php';
         </div>
       </div>
       <br>
-      
+
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
           <p>Friend Request</p>
@@ -115,7 +115,7 @@ require_once 'session_check.php';
 <footer class="w3-container w3-theme-d5">
   <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
 </footer>
- 
+
 <script>
 // Accordion
 function myFunction(id) {
@@ -123,9 +123,9 @@ function myFunction(id) {
     if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
         x.previousElementSibling.className += " w3-theme-d1";
-    } else { 
+    } else {
         x.className = x.className.replace("w3-show", "");
-        x.previousElementSibling.className = 
+        x.previousElementSibling.className =
         x.previousElementSibling.className.replace(" w3-theme-d1", "");
     }
 }
@@ -135,11 +135,11 @@ function openNav() {
     var x = document.getElementById("navDemo");
     if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
-    } else { 
+    } else {
         x.className = x.className.replace(" w3-show", "");
     }
 }
 </script>
 
 </body>
-</html> 
+</html>
