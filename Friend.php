@@ -6,7 +6,6 @@ class Friend
     public $FriendFirstName;
     public $FriendLastName;
     public $Steps;
-    //public $ListOfFriends;
 
     function __construct($FriendID, $FriendUserName, $FriendFirstName, $FriendLastName, $Steps)
     {
@@ -46,9 +45,6 @@ class Friend
 
     function PendingFriends()
     {
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error)
-            die($conn->connect_error);
             $query  = "Select
                             f.UserID,
                             u.UserName,
@@ -59,22 +55,17 @@ class Friend
                             Users u on u.UserID = f.FriendID
                         where
                             f.status = 'Pending'";
-
-            $results = $conn->query($query);
-            if (!$results) die ("Database access failed: " . $conn->error);
-
+            $results = $this->SubmitQuery($query);
             while($result = $results->fetch_array(MYSQLI_ASSOC))
             {
                 $PendingFriendsList[] = new Friend($result['FriendID'], $result['UserName'], $result['FirstName'], $result['LastName'], $result['steps']);
             }
+            $results->close();
         return $PendingFriendsList;
     }
 
     function FindFriend($UserName)
     {
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error)
-            die($conn->connect_error);
         $query  = "Select
                         f.UserID,
                         u.UserName,
@@ -84,7 +75,7 @@ class Friend
                     join
                         Users u on u.UserID = f.FriendID
                     where u.UserName = $UserName";
-          $results = $conn->query($query);
+          $results =  $this->SubmitQuery($query);
           if(mysql_num_rows($results) > 0)
           {
                 while($result = $results->fetch_array(MYSQLI_ASSOC))
@@ -93,52 +84,44 @@ class Friend
                 }
                 return $FoundFriend;
           }
+          $results->close();
           return null;
     }
     function SendFriendRequest($userID, $FriendID)
     {
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error)
-            die($conn->connect_error);
         $query = "INSERT INTO `friends`(`UserID`, `FriendID`)
                   VALUES ($userID, $FriendID)";
-        $results = $conn->query($query);
+        $results = $this->SubmitQuery($query);
         return;
     }
 
     function AcceptFriendRequest($userID, $FriendID)
     {
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error)
-            die($conn->connect_error);
         $query = "UPDATE `friends`
                   SET `Status`='Accepted',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
-        $results = $conn->query($query);
+        $results = $this->SubmitQuery($query);
+        $results->close();
         return;
     }
 
     function DeclineFriendRequest()
     {
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error)
-            die($conn->connect_error);
         $query = "UPDATE `friends`
                   SET `Status`='Declined',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
-        $results = $conn->query($query);
+        $results = $this->SubmitQuery($query);
+        $results->close();
         return;
     }
 
     function DeleteFriend()
     {
-        $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error)
-            die($conn->connect_error);
         $query = "UPDATE `friends`
                   SET `Status`='Removed',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
-        $results = $conn->query($query);
+        $results = $this->SubmitQuery($query);
+        $results->close();
         return;
     }
 
