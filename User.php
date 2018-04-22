@@ -30,9 +30,16 @@ class user
         }
         $query  = "SELECT UserName FROM users where UserName = '$this->username'";
         $results = $conn->query($query);
-        if(mysqli_num_rows($results) == 0)
+        if(mysqli_num_rows($results) == 0){
             $returnResult = true; //no other users with that name
-        else $returnResult = false; //there is already username in use
+            //$results->close();
+            $conn->close();
+            return  $returnResult;
+        }
+        else {
+            $conn->error;
+            $returnResult = false; //there is already username in use
+        }
         $results->close();
         $conn->close();
 
@@ -43,12 +50,10 @@ class user
         require 'login.php';
         $conn = new mysqli($hn, $un, $pw, $db);
         if (!$conn) {
-            echo "died";
 
             die("Connection failed: " . mysqli_connect_error());
         }
-        echo "yes";
-        $query = "INSERT INTO `users`
+        $query = "INSERT INTO `Users`
                     (
                         `UserName`,
                         `FirstName`,
@@ -69,11 +74,11 @@ class user
                         )";
         if ($conn->query($query) == True){
             $returnResult = true; //no other users with that name
-
         }
         else{
             $returnResult = false;
             return $returnResult;
+
         }
         $conn->close();
 

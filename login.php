@@ -11,7 +11,7 @@ else{
     $db = 'dcsp01'; // your NetID
     $un = 'dcsp01';  // your NetID
     $pw = 'ab1234!'; // your MySQL password on pluto
-    echo dirname(__FILE__);
+    //echo dirname(__FILE__);
 
 }
 ?>

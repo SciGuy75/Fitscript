@@ -41,22 +41,18 @@ table td {
     $UserNameTaken = 0;
     $isnewUsersSignedup = 0;
     $emptyfield = 0;
-    //echo "1";
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        //echo "2";
-
         if(isset($_REQUEST['fname']) && isset($_REQUEST['lname']) && isset($_REQUEST['username']) &&
             isset($_REQUEST['password'])  && isset($_REQUEST['gender']) &&  $_REQUEST['birthday'] != null &&
             isset($_REQUEST['phonenumber']) && isset($_REQUEST['heightFeet']) && isset($_REQUEST['heightInches']) &&
             isset($_REQUEST['weight']))
         {
-            //echo "3";
+
             $username = sanitizeString($_REQUEST['username']);
             $newUser = new user($username);
             if($newUser->CheckUserName())
             {
-                //echo "4";
                 $newUser->FirstName = sanitizeString($_REQUEST['fname']);
                 $newUser->LastName = sanitizeString($_REQUEST['lname']);
                 $newUser->UserName = sanitizeString($_REQUEST['username']);
@@ -67,7 +63,7 @@ table td {
                 $newUser->Height = sanitizeString($_REQUEST['heightFeet']).".".sanitizeString($_REQUEST['heightInches']);
                 $newUser->Weight = sanitizeString($_POST['weight']);
                 $isnewUsersSignedup = $newUser->CreateAccount();
-                //echo $isnewUsersSignedup;
+
                 $_SESSION['username'] = $newUser->UserName;
                 $_SESSION['pswd_token'] = $newUser->PasswordToken;//$token;
                 $_SESSION['FirstName'] = $newUser->FirstName;
@@ -75,7 +71,6 @@ table td {
                 $_SESSION['isAdmin'] = 0;
                 if(isset($_SESSION['isAdmin']))
                 {
-                    //echo "5";
                     routeUser();
                 }
             }
