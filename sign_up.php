@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html>
+<title>Sign Up Page</title>
 <?php
 $error = $userName = $password = "";
 require_once 'login.php';
@@ -11,50 +14,47 @@ if(isset($_SESSION['isAdmin']))
 }
 $userName = "bb";
 $newUser = new User($userName);
+$UserNameTaken = 0;
+$isnewUsersSignedup = 0;
+$emptyfield = 0;
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {          
-    //if(isset($_GET['username'])) $username = sanitizeString($_GET['username']);
-    //if(isset($_GET['password'])) $password = sanitizeString($_GET['password']);
-        
-    //$token = SaltPswd($password);
-    //$user = ExecuteQuery($token, $username);
-
-    //  if($user['password']== $token) 
-    //  {              
-    //      //session_start();
-    //      $_SESSION['username'] = $username;
-    //      $_SESSION['userID'] = $user['UserID'];
-    //      $_SESSION['pswd_token'] = $user['password'];//$token;
-    //      $_SESSION['FirstName'] = $user['FirstName'];
-    //      $_SESSION['LastName'] = $user['LastName'];
-    //      $_SESSION['isAdmin'] = $user['IsAdmin'];
-    //      routeUser();                  
-    //  }
-    //  else
-    //  {
-    //      $error = "The username / password combination is not correct.";
-    //  }
-    if(isset($_GET['fname']) && isset($_GET['lname']) && isset($_GET['username']) &&
-         isset($_GET['password']) && isset($_GET['birthday']) && isset($_GET['gender']) &&
-         isset($_GET['phone']) && isset($_GET['heightFeet']) && isset($_GET['heightInches']) &&
-         isset($_GET['weight']))
+    if(isset($_REQUEST['fname']) && isset($_REQUEST['lname']) && isset($_REQUEST['username']) &&
+        isset($_REQUEST['password'])  && isset($_REQUEST['gender']) &&  $_REQUEST['birthday'] != null &&
+        isset($_REQUEST['phonenumber']) && isset($_REQUEST['heightFeet']) && isset($_REQUEST['heightInches']) &&
+        isset($_REQUEST['weight']))
     {
-        $username = sanitizeString($_GET['username']);
-        $newUser = new User($username);
+        $username = sanitizeString($_REQUEST['username']);
+        $newUser = new user($username);
         if($newUser->CheckUserName())
         {
-            $newUser->FirstName = sanitizeString($_GET['fname']);
-            $newUser->LastName = sanitizeString($_GET['lname']);
-            $newUser->UserName = sanitizeString($_GET['username']);
-            $newUser->PasswordToken = SaltPswd(sanitizeString($_GET['password']));
-            $newUser->Birthday = sanitizeString($_GET['birthday']);
-            $newUser->Gender = sanitizeString($_GET['gender']);
-            $newUser->Phone = sanitizeString($_GET['Phone']);
-            $newUser->Height = sanitizeString($_GET['heightFeet']).".".sanitizeString($_GET['heightInches']);
-            $newUser->Weight = sanitizeString($_GET['weight']);
-            $newUser->CreateAccount();
+            $newUser->FirstName = sanitizeString($_REQUEST['fname']);
+            $newUser->LastName = sanitizeString($_REQUEST['lname']);
+            $newUser->UserName = sanitizeString($_REQUEST['username']);
+            $newUser->PasswordToken = SaltPswd(sanitizeString($_REQUEST['password']));
+            $newUser->Birthday = sanitizeString($_REQUEST['birthday']);
+            $newUser->Gender = strtoupper(sanitizeString($_REQUEST['gender']));
+            $newUser->Phone = sanitizeString($_REQUEST['phonenumber']);
+            $newUser->Height = sanitizeString($_REQUEST['heightFeet']).".".sanitizeString($_REQUEST['heightInches']);
+            $newUser->Weight = sanitizeString($_REQUEST['weight']);
+            $isnewUsersSignedup = $newUser->CreateAccount();
+            $_SESSION['username'] = $newUser->UserName;
+            $_SESSION['pswd_token'] = $newUser->PasswordToken;//$token;
+            $_SESSION['FirstName'] = $newUser->FirstName;
+            $_SESSION['LastName'] = $newUser->LastName;
+            $_SESSION['isAdmin'] = 0;
+            if(isset($_SESSION['isAdmin']))
+            {
+                routeUser();
+            }
         }
-}
+        else{
+            $UserNameTaken = True;
+        }
+    }
+    else{
+        $emptyfield = 1;
+    }
 }
 function sanitizeString($var)
   {
@@ -70,7 +70,7 @@ function routeUser()
     {
         header('Location: user_page.php');
         exit();
-    }    
+    }
 }
 
 function SaltPswd($p)
@@ -82,9 +82,6 @@ function SaltPswd($p)
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<title>Sign Up Page</title>
 <meta charset="UTF-8">
 <?php require_once 'stylesheets.php' ?>
 <style>
@@ -137,7 +134,7 @@ table td {
                 </tr>
                 <tr>
                     <td><label>Phone: </label></td>
-                    <td><input type="text" size="20" maxlength=10 name="phone" value=<?php $phone ?>> </td>
+                    <td><input type="text" size="20" maxlength=10 name="phonenumber" value=<?php $Phone ?>> </td>
                 </tr>
                 <tr>
                     <td><label>Height: </label></td>
@@ -149,11 +146,22 @@ table td {
                 </tr>
             </table>
             <p><input class="w3-button w3-red" type="submit" value="Sign Up"></p>
-        </h5>
+            <div class="w3-container">
+                <h5><?php
+                        if ($UserNameTaken){
+                            echo '<div class="w3-container w3-red">Username taken please try another</div>';
+                        }
+                        if ($emptyfield){
+                            echo '<div class="w3-container w3-red">Please fill out all fields</div>';
+                        }
+                    ?>
+                </h5>
+            </div>
 
-      <p class="w3-text-grey"><p style="font-style:italic">
+        </p></p>
+        <p class="w3-text-grey"><p style="font-style:italic">
             Placeholder for "forgot password" link<br><br>
-            Placeholder for "create account" link
+            Placeholder for "create account" link<br><br>
         </p></p>
     </div>
 
@@ -190,12 +198,10 @@ function ExecuteQuery($t,$n)
     // {
     //     $db_connect = new mysqli($hn, $un, $pw, $db);
     //     if($db_connect -> connect_error) die($db_connect -> connect_error);    
-        
     //     $query = "select * 
     //             from users 
     //             where username = '$n' and
     //             password = '$t'";
-
     //     $result = $db_connect->query($query);
     //     $user1 = $result->fetch_array(MYSQLI_ASSOC);
     //     $result->close();

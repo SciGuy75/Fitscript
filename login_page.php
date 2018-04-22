@@ -13,26 +13,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
     if(isset($_POST['password'])) $password = sanitizeString($_POST['password']);
 
     $token = SaltPswd($password);
-    $db_connect = new mysqli($hn, $un, $pw, $db);
-    //if($db_connect->connect_error) die( echo $db_connect->connect_error;);
+    $mysqli = new mysqli($hn, $un, $pw, $db);
+    if ($mysqli->connect_error) {
+        die('Connect Error: ' . $mysqli->connect_error);
+    }
+
 
    $query = "select *
            from Users
            where UserName = '$username' and
            Password = '$token'";
     //echo $query;
-    $result = $db_connect->query($query);
+    $result = $mysqli->query($query);
     //echo $result;
     $user = $result->fetch_array(MYSQLI_ASSOC);
     //echo $user['Password'];
     $result->close();
-    $db_connect->close();
+    $mysqli->close();
 
      if($user != "" && $user['Password']== $token)
      {
          //session_start();
          $_SESSION['username'] = $username;
-         $_SESSION['userID'] = $user['UserID'];
          $_SESSION['pswd_token'] = $user['password'];//$token;
          $_SESSION['FirstName'] = $user['FirstName'];
          $_SESSION['LastName'] = $user['LastName'];

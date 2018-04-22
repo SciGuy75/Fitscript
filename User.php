@@ -4,7 +4,7 @@ class user
     public $FirstName = "";
     public $LastName = "";
     public $UserName = "";
-    private $PasswordToken;
+    public $PasswordToken;
 	public $UserID = 0;
     public $Age = 0;
     public $Birthday = "";
@@ -23,13 +23,14 @@ class user
     
     function CheckUserName()
     {
-        require_once 'login.php'; 
+        require "login.php";
         $conn = new mysqli($hn, $un, $pw, $db);
-        if ($conn->connect_error) 
-            die($conn->connect_error);
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
         $query  = "SELECT UserName FROM users where UserName = '$this->username'";
-        $results = $conn->query($query); 
-        if(mysql_num_rows($result) == 0)
+        $results = $conn->query($query);
+        if(mysqli_num_rows($results) == 0)
             $returnResult = true; //no other users with that name
         else $returnResult = false; //there is already username in use
         $results->close();
@@ -39,6 +40,14 @@ class user
     }
     function CreateAccount()
 	{
+        require 'login.php';
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if (!$conn) {
+            echo "died";
+
+            die("Connection failed: " . mysqli_connect_error());
+        }
+        echo "yes";
         $query = "INSERT INTO `users`
                     (
                         `UserName`, 
@@ -58,7 +67,18 @@ class user
                       $this->Height,
                       $this->PasswordToken
                         )";
-		return;
+        if ($conn->query($query) == True){
+            $returnResult = true; //no other users with that name
+            echo "True";
+        }
+        else{
+            $returnResult = false;
+            echo $conn->query($query)."false";
+            return $returnResult;
+        }
+        $conn->close();
+
+		return $returnResult;
 	}
 }
 ?>
