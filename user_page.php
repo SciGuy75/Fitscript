@@ -12,14 +12,12 @@
 </style>
 <body class="w3-theme-l5">
 
-<!-- Navbar -->
-
 <?php
-
 //require_once 'login.php';
 require_once 'navbar.php';
 require_once 'Friend.php';
 require_once 'User.php';
+require_once 'Challenge.php';
 require_once 'session_check.php';
 $user_class = new user($_SESSION['username']);
 $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
@@ -88,7 +86,21 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
         <div class="w3-container">
           <p><h4>Current Challenges</h4></p>
           <hr>
-          <p><strong>Challenger</strong></p>
+          <?php $Challenge = new Challenge(-1,"","",-1,0);
+                $Challenges = $Challenge->GetAllChallenges($user_class->UserID);
+                foreach($Challenges as $c)
+                {
+                    if($c->status == 'Accepted')
+                        echo "<p>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</p>";
+                }
+            ?>
+          <p><strong>Pending Challenges</strong></p>
+          <?php foreach($Challenges as $c)
+                {
+                    if($c->status == 'Pending')
+                        echo "<p>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</p>";
+                }
+            ?>
           <p>Challenge</p>
           <hr>
           <p><button class="w3-button w3-block w3-theme-l4">more</button></p>
@@ -103,10 +115,14 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
             <span><h3><b>Friends<b></h3></span>
             <?php $friend = new Friend(-1,"","",-1,0);
                 $FriendList = $friend->Friends();
-                foreach($FriendList as $f)
+                if(count($FriendList) > 0)
                 {
-                  echo "<p>".$f->FriendFirstName." ".$f->FriendLastName." ".$f->Steps."</p>";
+                    foreach($FriendList as $f)
+                    {
+                      echo "<p>".$f->FriendFirstName." ".$f->FriendLastName." ".$f->Steps."</p>";
+                    }
                 }
+               else echo "-";
             ?>
             <hr>
             <h4><p><b>Friend Request</b></p></h4>

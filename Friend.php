@@ -19,19 +19,25 @@ class Friend
     {
         $userID = $_SESSION['userID'];
         $query  = "SELECT
-                        u.UserName,
-                        f.FriendID,
-                        u.FirstName,
+                        u.UserName, 
+                        f.FriendID, 
+                        u.FirstName, 
                         u.LastName,
-                        sum(s.Steps) as steps
-                    FROM `Friends` f
-                        join Users u on u.UserID = f.FriendID
-                        left join Steps s on s.UserID = u.UserID
+                        s.steps
+                    FROM `Friends` f 
+                    join Users u on u.UserID = f.FriendID 
+                    left join 
+                    (	select 
+                            s.UserID,
+                            sum(s.Steps) as steps 
+                        from 
+                            steps s	
+                        WHERE 
+                            (s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) AND now() OR 
+                            s.DateUpdated is null)
+                    ) as s on s.UserID = u.UserID
                     WHERE
-                        f.UserID = '$userID' AND
-                        f.status = 'Accepted' AND
-                        (s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) AND now() OR
-                        s.DateUpdated is null)";
+                        f.UserID = $userID";
        
         $results = $this->SubmitQuery($query);
         while($result = $results->fetch_array(MYSQLI_ASSOC))

@@ -42,10 +42,12 @@ class Challenge
 					join 
 						`challenges` on challenges.ChallengeID = challengegroups.ChallengeID
 					WHERE 
-						challengegroups.UserID = $UserID
-						and challenges.EndDate >= now()";
+						challengegroups.UserID = $UserID and 
+						challenges.EndDate >= now()";
 
 		$results = $conn->query($query);
+		$conn->close();
+		$Challenges[] = new Challenge("","","","","");
 		while($result = $results->fetch_array(MYSQLI_ASSOC))
         {
 			$Challenges[] = new Challenge($result['ChallengeID'], 
@@ -55,7 +57,6 @@ class Challenge
 										  $result['EndDate']);
 		}
 		$results->close();
-		$conn->close();
 		return $Challenges;
 	}
 	function CreateChallenge($UserID, $Friends, $ChallengeType, $startDate)
