@@ -176,8 +176,7 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
         <b></h3>
         <p>Today's Steps: </p>
 		<p>Total Steps: </p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
+        Update Today's steps<input type="number" name="steps" /> <input type="submit" value ="Update Steps" name="submit"/>
       </div>
     <!-- End Middle Column -->
     </div>
