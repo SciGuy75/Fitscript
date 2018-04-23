@@ -2,12 +2,22 @@
 class Challenge
 {
 	private $ChallengeID;
-	private $ChallengeType;
-	private $status;
+	public $ChallengeType;
+	public $status;
+	public $StartDate;
+	public $EndDate;
 	private $eligible_for_pts;
 	private $points_reward;
-	
-	function accept( $UserID, $ChallengeID)
+	 
+	function __construct($ChallengeID, $ChallengeType, $status, $StartDate, $EndDate)
+	{
+		$this->ChallengeID = $ChallengeID;
+		$this->ChallengeType = $ChallengeType;
+		$this->status = $status;
+		$this->StartDate = $StartDate;
+		$this->EndDate = $EndDate;
+	}
+	function accept($UserID, $ChallengeID)
 	{
 		
 		return;
@@ -16,6 +26,37 @@ class Challenge
 	function decline( $UserID,  $UserName, $ChallengeID)
 	{
 		return;
+	}
+	
+	function GetAllChallenges($UserID)
+	{
+		require 'login.php';
+		$conn = new mysqli($hn, $un, $pw, $db);
+		if ($conn->connect_error)
+			die($conn->connect_error);
+
+		$query = "SELECT 
+						* 
+					FROM 
+						`challengegroups` 
+					join 
+						`challenges` on challenges.ChallengeID = challengegroups.ChallengeID
+					WHERE 
+						challengegroups.UserID = $UserID
+						and challenges.EndDate >= now()";
+
+		$results = $conn->query($query);
+		while($result = $results->fetch_array(MYSQLI_ASSOC))
+        {
+			$Challenges[] = new Challenge($result['ChallengeID'], 
+									 	  $result['ChallengeType'], 
+										  $result['status'],
+										  $result['StartDate'],
+										  $result['EndDate']);
+		}
+		$results->close();
+		$conn->close();
+		return $Challenges;
 	}
 	function CreateChallenge($UserID, $Friends, $ChallengeType, $startDate)
 	{
@@ -46,10 +87,11 @@ class Challenge
 				$AddFriends += "INSERT INTO `challengegroups`(
 												`ChallengeID`, 
 												`UserID`) 
-									VALUES ($challengeID, $f->FriendUserID)";
+									VALUES ($challengeID, $f->FriendUserID);";
 			}
 			if($AddFriends != "")
 				$results = $conn->query($AddFriends);
+			$results->close();
 			$conn->close();
 		}
 		return;
