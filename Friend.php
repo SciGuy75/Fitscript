@@ -31,7 +31,7 @@ class Friend
                             s.UserID,
                             sum(s.Steps) as steps 
                         from 
-                            steps s	
+                            Steps s	
                         WHERE 
                             (s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) AND now() OR 
                             s.DateUpdated is null)
@@ -100,7 +100,7 @@ class Friend
     }
     function SendFriendRequest($userID, $FriendID)
     {
-        $query = "INSERT INTO `friends`(`UserID`, `FriendID`)
+        $query = "INSERT INTO `Friends`(`UserID`, `FriendID`)
                   VALUES ($userID, $FriendID)";
         $results = $this->SubmitQuery($query);
         return;
@@ -108,7 +108,7 @@ class Friend
 
     function AcceptFriendRequest($userID, $FriendID)
     {
-        $query = "UPDATE `friends`
+        $query = "UPDATE `Friends`
                   SET `Status`='Accepted',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
         $results = $this->SubmitQuery($query);
@@ -118,7 +118,7 @@ class Friend
 
     function DeclineFriendRequest()
     {
-        $query = "UPDATE `friends`
+        $query = "UPDATE `Friends`
                   SET `Status`='Declined',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
         $results = $this->SubmitQuery($query);
@@ -128,7 +128,7 @@ class Friend
 
     function DeleteFriend()
     {
-        $query = "UPDATE `friends`
+        $query = "UPDATE `Friends`
                   SET `Status`='Removed',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
         $results = $this->SubmitQuery($query);

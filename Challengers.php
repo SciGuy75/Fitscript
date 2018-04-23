@@ -20,6 +20,10 @@ class Challengers
         $this->Steps = $Steps != null ? $Steps : "";
     }
     
+    function AddChallenger($ChallengeID, $ChallengerID)
+    {
+        
+    }
     function GetChallengers($ChallengeID)
     {
         require 'login.php';
@@ -28,23 +32,23 @@ class Challengers
             die($conn->connect_error);
 
         $query = "SELECT 
-                        users.UserID,
-                        users.FirstName,
-                        users.LastName,
-                        users.UserName,
-                        challengegroups.Status,
-                        sum(steps.Steps) as Steps,
-                        challengegroups.ChallengeID
+                        u.UserID,
+                        u.FirstName,
+                        u.LastName,
+                        u.UserName,
+                        g.Status,
+                        sum(s.Steps) as Steps,
+                        g.ChallengeID
                     FROM 
-                        `challengegroups`
+                        `challengegroups` g
                     JOIN 
-                        challenges on challenges.ChallengeID = challengegroups.ChallengeID
+                        Challenges c on c.ChallengeID = g.ChallengeID
                     left join 
-                        steps on steps.UserID = challengegroups.UserID
-                    JOIN users on users.UserID = challengegroups.ChallengeID
+                        Steps s on s.UserID = g.UserID
+                    JOIN Users u on u.UserID = g.ChallengeID
                     WHERE 
-                        challengegroups.ChallengeID = $ChallengeID
-                    and steps.CreatedOn >= challenges.StartDate";
+                        g.ChallengeID = $ChallengeID
+                    and s.CreatedOn >= c.StartDate";
 
         $results = $conn->query($query);    
 

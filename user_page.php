@@ -13,14 +13,13 @@
 <body class="w3-theme-l5">
 
 <?php
-//require_once 'login.php';
 require_once 'navbar.php';
 require_once 'Friend.php';
 require_once 'User.php';
 require_once 'Challenge.php';
 require_once 'session_check.php';
 $user_class = new user($_SESSION['username']);
-$user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
+$user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
 ?>
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
@@ -76,7 +75,6 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
         <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
         <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
       </div>
-
     <!-- End Middle Column -->
     </div>
 
@@ -86,13 +84,13 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
         <div class="w3-container">
           <p><h4>Current Challenges</h4></p>
           <hr>
-          <?php $Challenge = new Challenge(-1,"","",-1,0);
-                $Challenges = $Challenge->GetAllChallenges($user_class->UserID);
-                foreach($Challenges as $c)
-                {
-                    if($c->status == 'Accepted')
-                        echo "<p>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</p>";
-                }
+          <?php //$Challenge = new Challenge(-1,"","",-1,0);
+                // $Challenges = $Challenge->GetAllChallenges($user_class->UserID);
+                // foreach($Challenges as $c)
+                // {
+                //     if($c->status == 'Accepted')
+                //         echo "<p>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</p>";
+                // }
             ?>
           <p><strong>Pending Challenges</strong></p>
           <?php foreach($Challenges as $c)
@@ -109,10 +107,19 @@ $user_class->GetInfo($user_class->UserName,$_SESSION['pswd_token']);
       <br>
 
     <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
-
+        <div class="w3-container"> <span><h3><b>Friends<b></h3></span>
+            <!-- <table>
+                <tr>
+                    <td>
+                        <span><h3><b>Friends<b></h3></span>
+                    </td>
+                    <td>
+                        <button class="w3-button w3-white fa-border"><i class="fa fa-plus"></i></button>
+                    </td>
+                </tr>
+            </table> -->
             <!-- <img src="#" alt="friendslistAvatar" style="width:50%"><br> -->
-            <span><h3><b>Friends<b></h3></span>
+            
             <?php $friend = new Friend(-1,"","",-1,0);
                 $FriendList = $friend->Friends();
                 if(count($FriendList) > 0)
