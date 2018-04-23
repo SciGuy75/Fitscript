@@ -174,7 +174,8 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                 <?php //echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?>
                 <?php echo  "Hi, ".$user_class->UserName; ?>
         <b></h3>
-        <p>Current Updates + Graphs go here</p>
+        <p>Today's Steps: </p>
+		<p>Total Steps: </p>
         <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
         <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
       </div>
