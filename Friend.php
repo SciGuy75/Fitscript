@@ -51,7 +51,7 @@ class Friend
 
     function PendingFriends()
     {
-            $query  = "Select
+            $query  = "SELECT
                             f.UserID,
                             u.UserName,
                             f.FriendID,
