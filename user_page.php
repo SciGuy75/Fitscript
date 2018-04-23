@@ -11,7 +11,7 @@
     background-color: #eee;
     color: #444;
     cursor: pointer;
-    padding: 18px;
+    padding: 10px;
     width: 100%;
     border: none;
     text-align: left;
@@ -23,9 +23,13 @@
 .active, .accordion:hover {
     background-color: #ccc; 
 }
-
+.myButton{
+    height:30px;
+    width:50px;
+}
 .panel {
-    padding: 0 18px;
+    padding: 0 0 18px;
+    
     display: none;
     background-color: white;
     overflow: hidden;
@@ -72,7 +76,82 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
         </div>
       </div>
       <br>
-
+      <div class="w3-card w3-round w3-white w3-center">
+        <div class="w3-container"> <span><h3><b>Friends<b></h3></span>
+            <!-- <table>
+                <tr>
+                    <td>
+                        <span><h3><b>Friends<b></h3></span>
+                    </td>
+                    <td>
+                        <button class="w3-button w3-white fa-border"><i class="fa fa-plus"></i></button>
+                    </td>
+                </tr>
+            </table> -->
+            <!-- <img src="#" alt="friendslistAvatar" style="width:50%"><br> -->
+            
+            <?php $friend = new Friend(-1,"","",-1,0);
+                $FriendList = $friend->Friends();
+                if(count($FriendList) > 0)
+                {
+                    foreach(array_slice($FriendList,1) as $f)
+                    {
+                      echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
+                      <div class='panel'>
+                            <div class='w3-half'>
+                                <button class='w3-button w3-block w3-section' title='Steps'>$f->Steps</button>
+                            </div>
+                           
+                            <div class='w3-half'>
+                                <button class='w3-button w3-block w3-red w3-section' title='Delete'>Delete</button>
+                            </div>
+                      </div>";
+                    }
+                }
+               else echo "-";
+            ?>
+            <hr>
+            <h4><p><b>Friend Request</b></p></h4>
+            <hr>
+            <?php $friend = new Friend(-1,"","",-1,0);
+                $PendingFriendList = $friend->PendingFriends();
+                if(count($PendingFriendList) > 0)
+                {
+                    foreach(array_slice($PendingFriendList,1) as $f)
+                    {
+                      echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
+                      <div class='panel'>
+                            <div class='w3-half'>
+                            <button class='w3-button w3-block w3-green w3-section' title='Accept'><i class='fa fa-check'></i></button>
+                            </div>
+                           
+                            <div class='w3-half'>
+                                <button class='w3-button w3-block w3-red w3-section' title='Delete'><i class='fa fa-remove'></i></button>
+                            </div>
+                      </div>";
+                    }
+                }
+               else echo "-";
+            ?>
+            <div class="w3-row w3-opacity">
+                <div>
+                  <button class="w3-button w3-block w3-green w3-section accordion" title="Add">Add Friends</button>
+                  <div class='panel'>
+                        <table>
+                        <tr>
+                        <td>
+                        <input type="text" name="newFriend" size=17></td>
+                        <td><button class="w3-button myButton" title="addFriendButton"><i class="fa fa-plus"></i></button>
+                        </td></tr>
+                        </table>
+                  </div>
+                </div>
+                <!-- <div class="w3-half">
+                    <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+                </div> -->
+            </div>
+        </div>
+    </div>
       <!-- Alert Box -->
       <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
         <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
@@ -134,73 +213,7 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
       </div>
       <br>
 
-    <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container"> <span><h3><b>Friends<b></h3></span>
-            <!-- <table>
-                <tr>
-                    <td>
-                        <span><h3><b>Friends<b></h3></span>
-                    </td>
-                    <td>
-                        <button class="w3-button w3-white fa-border"><i class="fa fa-plus"></i></button>
-                    </td>
-                </tr>
-            </table> -->
-            <!-- <img src="#" alt="friendslistAvatar" style="width:50%"><br> -->
-            
-            <?php $friend = new Friend(-1,"","",-1,0);
-                $FriendList = $friend->Friends();
-                if(count($FriendList) > 0)
-                {
-                    foreach(array_slice($FriendList,1) as $f)
-                    {
-                      echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
-                      <div class='panel'>
-                            <div class='w3-half'>
-                                <button class='w3-button w3-block w3-section' title='Steps'>$f->Steps</button>
-                            </div>
-                           
-                            <div class='w3-half'>
-                                <button class='w3-button w3-block w3-red w3-section' title='Delete'>Delete</button>
-                            </div>
-                      </div>";
-                    }
-                }
-               else echo "-";
-            ?>
-            <hr>
-            <h4><p><b>Friend Request</b></p></h4>
-            <hr>
-            <?php $friend = new Friend(-1,"","",-1,0);
-                $PendingFriendList = $friend->PendingFriends();
-                if(count($PendingFriendList) > 0)
-                {
-                    foreach(array_slice($PendingFriendList,1) as $f)
-                    {
-                      echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
-                      <div class='panel'>
-                            <div class='w3-half'>
-                            <button class='w3-button w3-block w3-green w3-section' title='Accept'><i class='fa fa-check'></i></button>
-                            </div>
-                           
-                            <div class='w3-half'>
-                                <button class='w3-button w3-block w3-red w3-section' title='Delete'><i class='fa fa-remove'></i></button>
-                            </div>
-                      </div>";
-                    }
-                }
-               else echo "-";
-            ?>
-            <div class="w3-row w3-opacity">
-                <div class="w3-half">
-                  <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-                </div>
-                <div class="w3-half">
-                    <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <br>
     <!-- End Right Column -->
     </div>
