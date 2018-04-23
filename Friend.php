@@ -37,7 +37,7 @@ class Friend
                             s.DateUpdated is null)
                     ) as s on s.UserID = u.UserID
                     WHERE
-                        f.UserID = $userID";
+                        f.UserID = $userID and f.status = 'Accepted'";
        
         $results = $this->SubmitQuery($query);
         $FriendList[] = new Friend("","","","","");
