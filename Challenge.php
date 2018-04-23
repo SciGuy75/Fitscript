@@ -38,15 +38,15 @@ class Challenge
 		$query = "SELECT 
 						* 
 					FROM 
-						`challengegroups` 
+						`ChallengeGroups` g
 					join 
-						`challenges` on challenges.ChallengeID = challengegroups.ChallengeID
+						`Challenges` c on c.ChallengeID = g.ChallengeID
 					WHERE 
-						challengegroups.UserID = $UserID and 
-						challenges.EndDate >= now()";
+						g.UserID = $UserID and 
+						c.EndDate >= now()";
 
 		$results = $conn->query($query);
-		$conn->close();
+		if (!$results) die ("Database access failed: " . $conn->error);
 		$Challenges[] = new Challenge("","","","","");
 		while($result = $results->fetch_array(MYSQLI_ASSOC))
         {
@@ -56,6 +56,7 @@ class Challenge
 										  $result['StartDate'],
 										  $result['EndDate']);
 		}
+		$conn->close();
 		$results->close();
 		return $Challenges;
 	}

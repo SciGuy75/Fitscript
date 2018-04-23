@@ -84,13 +84,14 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
         <div class="w3-container">
           <p><h4>Current Challenges</h4></p>
           <hr>
-          <?php //$Challenge = new Challenge(-1,"","",-1,0);
-                // $Challenges = $Challenge->GetAllChallenges($user_class->UserID);
-                // foreach($Challenges as $c)
-                // {
-                //     if($c->status == 'Accepted')
-                //         echo "<p>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</p>";
-                // }
+          <?php $Challenge = new Challenge(-1,"","",-1,0);
+                $Challenges = $Challenge->GetAllChallenges($user_class->UserID);
+                if(count($Challenges) > 0)
+                foreach($Challenges as $c)
+                {
+                    if($c->status == 'Accepted')
+                        echo "<p>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</p>";
+                }
             ?>
           <p><strong>Pending Challenges</strong></p>
           <?php foreach($Challenges as $c)

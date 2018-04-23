@@ -92,22 +92,21 @@ class user
             die('Connect Error: ' . $mysqli->connect_error);
         }
 
-
         $query = "select *
-               from Users
-               where UserName = '$username' and
-               Password = '$pwtoken'";
-        //echo $query;
+                    from Users
+                    where UserName = '$username' and
+                    Password = '$pwtoken'";
+
         $result = $mysqli->query($query);
         //echo $result;
         $row = $result->fetch_array(MYSQLI_ASSOC);
-
 
         if( $row["UserName"]!= "" && $row['Password']== $pwtoken)
         {
             $this->FirstName = $row["FirstName"];
             $this->LastName = $row["LastName"];
             $this->UserName = $row["UserName"];
+            $this->UserID = $row["UserID"];
             $this->PasswordToken = $row["Password"];
             $this->Birthday = $row["Birthday"];
 
@@ -125,7 +124,7 @@ class user
             $result->close();
             $mysqli->close();
         }
-        return;
+        return $this;
     }
 }
 ?>
