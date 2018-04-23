@@ -40,9 +40,14 @@ class Friend
                         f.UserID = $userID";
        
         $results = $this->SubmitQuery($query);
+        $FriendList[] = new Friend("","","","","");
         while($result = $results->fetch_array(MYSQLI_ASSOC))
         {
-            $FriendList[] = new Friend($result['FriendID'], $result['UserName'], $result['FirstName'], $result['LastName'], $result['steps']);
+            $FriendList[] = new Friend($result['FriendID'], 
+                                       $result['UserName'], 
+                                       $result['FirstName'], 
+                                       $result['LastName'], 
+                                       $result['steps']);
         }
         $results->close();
         
