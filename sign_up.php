@@ -36,7 +36,7 @@ table td {
     {
         routeUser();
     }
-    $userName = "bb";
+    $userName = "";
     $newUser = new User($userName);
     $UserNameTaken = 0;
     $isnewUsersSignedup = 0;
