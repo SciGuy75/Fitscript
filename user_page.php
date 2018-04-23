@@ -6,7 +6,31 @@
     session_start();
     require_once 'stylesheets.php'
 ?>
+ <style>
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
 
+.active, .accordion:hover {
+    background-color: #ccc; 
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+</style>
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </style>
@@ -90,7 +114,10 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                 foreach($Challenges as $c)
                 {
                     if($c->status == 'Accepted')
-                        echo "<p>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</p>";
+                    {
+                        echo "<button class='accordion'>".$c->ChallengeID." ".$f->status." ".$c->StartDate." ".$c->EndDate."</button>
+                        <div class='panel'>filler</div>";
+                    }       
                 }
             ?>
           <p><strong>Pending Challenges</strong></p>
@@ -125,9 +152,18 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                 $FriendList = $friend->Friends();
                 if(count($FriendList) > 0)
                 {
-                    foreach($FriendList as $f)
+                    foreach(array_slice($FriendList,1) as $f)
                     {
-                      echo "<p>".$f->FriendFirstName." ".$f->FriendLastName." ".$f->Steps."</p>";
+                      echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
+                      <div class='panel'>
+                            <div class='w3-half'>
+                                <button class='w3-button w3-block w3-section' title='Steps'>$f->Steps</button>
+                            </div>
+                           
+                            <div class='w3-half'>
+                                <button class='w3-button w3-block w3-red w3-section' title='Delete'>Delete</button>
+                            </div>
+                      </div>";
                     }
                 }
                else echo "-";
@@ -135,7 +171,26 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
             <hr>
             <h4><p><b>Friend Request</b></p></h4>
             <hr>
-
+            <?php $friend = new Friend(-1,"","",-1,0);
+                $PendingFriendList = $friend->PendingFriends();
+                if(count($PendingFriendList) > 0)
+                {
+                    foreach(array_slice($PendingFriendList,1) as $f)
+                    {
+                      echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
+                      <div class='panel'>
+                            <div class='w3-half'>
+                            <button class='w3-button w3-block w3-green w3-section' title='Accept'><i class='fa fa-check'></i></button>
+                            </div>
+                           
+                            <div class='w3-half'>
+                                <button class='w3-button w3-block w3-red w3-section' title='Delete'><i class='fa fa-remove'></i></button>
+                            </div>
+                      </div>";
+                    }
+                }
+               else echo "-";
+            ?>
             <div class="w3-row w3-opacity">
                 <div class="w3-half">
                   <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
@@ -173,7 +228,7 @@ function myFunction(id) {
         x.previousElementSibling.className += " w3-theme-d1";
     } else {
         x.className = x.className.replace("w3-show", "");
-        x.previousElementSibling.className =
+        x.previousElementSibling.className = "";
         x.previousElementSibling.className.replace(" w3-theme-d1", "");
     }
 }
@@ -186,6 +241,21 @@ function openNav() {
     } else {
         x.className = x.className.replace(" w3-show", "");
     }
+}
+//document.getElementByTag("Button").style.margin = "25px";
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
 }
 </script>
 

@@ -13,7 +13,7 @@ class Friend
         $this->FriendUserName = $FriendUserName;
         $this->FriendFirstName = $FriendFirstName;
         $this->FriendLastName = $FriendLastName;
-        $this->Steps = $Steps != null ? $Steps : "";
+        $this->Steps = $Steps != null ? $Steps : 0000;
     }
     function Friends()
     {
@@ -67,6 +67,7 @@ class Friend
                         where
                             f.status = 'Pending'";
             $results = $this->SubmitQuery($query);
+            $PendingFriendsList[] =  new Friend("","","","","");
             while($result = $results->fetch_array(MYSQLI_ASSOC))
             {
                 $PendingFriendsList[] = new Friend($result['FriendID'], $result['UserName'], $result['FirstName'], $result['LastName'], $result['steps']);

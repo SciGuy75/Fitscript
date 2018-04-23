@@ -70,7 +70,7 @@ class Challenge
 				die($conn->connect_error);
 			$date = strtotime($startDate);
 			$endDate = strotime("+7 day",$startDate);	
-			$CreateChallenge = "INSERT INTO `challenges`( 
+			$CreateChallenge = "INSERT INTO `Challenges`( 
 													`ChallengeType`, 
 													`Creator`, 
 													`EndDate`,
@@ -86,7 +86,7 @@ class Challenge
 			$AddFriends = "";
 			foreach($Friends as $f)
 			{
-				$AddFriends += "INSERT INTO `challengegroups`(
+				$AddFriends += "INSERT INTO `ChallengeGroups`(
 												`ChallengeID`, 
 												`UserID`) 
 									VALUES ($challengeID, $f->FriendUserID);";
