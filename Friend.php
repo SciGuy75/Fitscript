@@ -60,7 +60,7 @@ class Friend
                             f.UserID,
                             u.UserName,
                             f.FriendID,
-                            u.FirstName
+                            u.FirstName,
                             u.LastName,
                             s.steps
                         from Friends f
