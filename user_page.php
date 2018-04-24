@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+<head>
+<script async="" src="//www.google-analytics.com/analytics.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
 <title>UserPage</title>
 <meta charset="UTF-8">
 <?php
@@ -38,9 +42,10 @@
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </style>
+</head>
 <body class="w3-theme-l5">
-
 <?php
+require_once 'Steps.php';
 require_once 'navbar.php';
 require_once 'Friend.php';
 require_once 'User.php';
@@ -48,6 +53,7 @@ require_once 'Challenge.php';
 require_once 'session_check.php';
 $user_class = new user($_SESSION['username']);
 $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
+$Steps = new Steps();
 ?>
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
@@ -174,10 +180,16 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                 <?php //echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?>
                 <?php echo  "Hi, ".$user_class->UserName; ?>
         <b></h3>
-        <p>Today's Steps: </p>
-		<p>Total Steps: </p>
-        Update Today's steps<input type="number" name="steps" min="0" max="15000" /> <input type="submit" value ="Update Steps" name="submit"/>
+        <p>Today's Steps: <?php echo $Steps->GetTodaySteps($user_class->UserID)?></p>
+        <!-- <canvas id="myStepChart" class="chartjs-render-monitor" width=200 height=200></canvas> -->
+
+		<p>Total Steps: <?php echo $Steps->GetAllSteps($user_class->UserID)?></p>
+        Update Today's steps: <input type="number" id="steps" name="steps" min="0" max="15000" /> <button class="w3-button w3-green myButton" onclick="UpdateSteps()"><i class='fa fa-plus'></i></button>
       </div>
+      
+<script>
+
+</script>
     <!-- End Middle Column -->
     </div>
 
@@ -208,7 +220,11 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
             ?>
           <p>Challenge</p>
           <hr>
-          <p><button class="w3-button w3-block w3-theme-l4">more</button></p>
+          <div><button class="w3-button w3-block w3-section accordion" title="Add">More</button>
+                  <div class='panel'>
+                      <button class="w3-button" onclick="CreateChallenge($user_class->UserID)" ><i class='fa fa-plus'></i> Create Challenge</button>
+                  </div>
+          </div>
         </div>
       </div>
       <br>
@@ -266,6 +282,21 @@ function AcceptFriendRequest(fuserID)
   //xhttp.open("POST", "AddFriendAjax.php?newFriend="+x+"&StatusChange=Accept",true);
   xhttp.send();
 }
+function UpdateSteps()
+{
+    var x = document.getElementById("steps").value;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        //location.reload();
+      document.getElementById("Alerts").innerHTML =
+      this.responseText;
+        }
+    };
+    xhttp.open("POST", "UpdateHealth.php?StatusChange=Steps&StepCount="+x, true);
+    //xhttp.open("POST", "AddFriendAjax.php?newFriend="+x+"&StatusChange=Accept",true);
+    xhttp.send();
+}
 function DeclineFriendRequest(fuserID)
 {
     var xhttp = new XMLHttpRequest();
@@ -308,6 +339,7 @@ for (i = 0; i < acc.length; i++) {
         }
     });
 }
+	
 </script>
 
 </body>

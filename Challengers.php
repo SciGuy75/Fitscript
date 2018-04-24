@@ -22,8 +22,13 @@ class Challengers
     
     function AddChallenger($ChallengeID, $ChallengerID)
     {
-        
+        $query = "INSERT INTO 
+                    `ChallengeGroups`(
+                        `ChallengeID`, 
+                        `UserID`) 
+                    VALUES ('$ChallengeID','$ChallengerID')";
     }
+
     function GetChallengers($ChallengeID)
     {
         require 'login.php';
