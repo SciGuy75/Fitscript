@@ -37,8 +37,8 @@ class Friend
                             s.DateUpdated is null)
                     ) as s on s.UserID = u.UserID
                     WHERE
-                        f.UserID = $userID and f.status = 'Accepted'";
        
+                        f.UserID = '$userID' AND f.Status = 'Accepted'";
         $results = $this->SubmitQuery($query);
         $FriendList[] = new Friend("","","","","");
         while($result = $results->fetch_array(MYSQLI_ASSOC))
@@ -61,10 +61,14 @@ class Friend
                             u.UserName,
                             f.FriendID,
                             u.FirstName
+                            u.LastName,
+                            s.steps
                         from Friends f
                         join
                             Users u on u.UserID = f.FriendID
-                        where
+                        join
+                            Steps s on s.UserID = u.UserID
+                        WHERE
                             f.status = 'Pending'";
             $results = $this->SubmitQuery($query);
             $PendingFriendsList[] =  new Friend("","","","","");
