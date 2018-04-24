@@ -19,34 +19,34 @@ class Friend
     {
         $userID = $_SESSION['userID'];
         $query  = "SELECT
-                        u.UserName, 
-                        f.FriendID, 
-                        u.FirstName, 
+                        u.UserName,
+                        f.FriendID,
+                        u.FirstName,
                         u.LastName,
                         s.steps
-                    FROM `Friends` f 
-                    join Users u on u.UserID = f.FriendID 
-                    left join 
-                    (	select 
+                    FROM `Friends` f
+                    join Users u on u.UserID = f.FriendID
+                    left join
+                    (	select
                             s.UserID,
-                            sum(s.Steps) as steps 
-                        from 
-                            Steps s	
-                        WHERE 
-                            (s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) AND now() OR 
+                            sum(s.Steps) as steps
+                        from
+                            Steps s
+                        WHERE
+                            (s.DateUpdated BETWEEN date_sub(now(), INTERVAL 7 day) AND now() OR
                             s.DateUpdated is null)
                     ) as s on s.UserID = u.UserID
                     WHERE
-       
+
                         f.UserID = '$userID' AND f.Status = 'Accepted'";
         $results = $this->SubmitQuery($query);
         $FriendList[] = new Friend("","","","","");
         while($result = $results->fetch_array(MYSQLI_ASSOC))
         {
-            $FriendList[] = new Friend($result['FriendID'], 
-                                       $result['UserName'], 
-                                       $result['FirstName'], 
-                                       $result['LastName'], 
+            $FriendList[] = new Friend($result['FriendID'],
+                                       $result['UserName'],
+                                       $result['FirstName'],
+                                       $result['LastName'],
                                        $result['steps']);
         }
         $results->close();
@@ -56,15 +56,15 @@ class Friend
     function PendingFriends($UserID)
     {
             $query  = "SELECT
-                            u.UserName, 
-                            f.UserID, 
-                            u.FirstName, 
+                            u.UserName,
+                            f.UserID,
+                            u.FirstName,
                             u.LastName
-                        FROM `Friends` f 
-                        join 
-                            Users u on u.UserID = f.UserID 
+                        FROM `Friends` f
+                        join
+                            Users u on u.UserID = f.UserID
                         WHERE
-                            f.FriendID = $UserID AND 
+                            f.FriendID = $UserID AND
                             f.Status = 'Pending'";
             $results = $this->SubmitQuery($query);
             $PendingFriendsList[] =  new Friend("","","","","");
@@ -84,11 +84,11 @@ class Friend
                             u.UserName,
                             u.FirstName,
                             u.LastName
-                        from 
-                            Users u 
-                        where 
+                        from
+                            Users u
+                        where
                             u.UserName = '$UserName'";
-                    
+
           $FoundUser = $this->SubmitQuery($query1);
 
           if($FoundUser)
@@ -97,7 +97,7 @@ class Friend
                 $result = $FoundUser->fetch_array(MYSQLI_ASSOC);
 
                 $FoundUserID =  $result['UserID'];
-                $query2 = "SELECT * 
+                $query2 = "SELECT *
                           FROM `Friends`
                           WHERE Friends.UserID = $FoundUserID and Friends.FriendID = $userID";
                 $Check1 = $this->SubmitQuery($query2);
@@ -108,7 +108,7 @@ class Friend
                       echo "You have a request already from them with status: $status ";
                       return null;
                   }
-                  $query3 = "SELECT * 
+                  $query3 = "SELECT *
                           FROM `Friends`
                           WHERE Friends.UserID = $userID and Friends.FriendID = $FoundUserID";
                   $Check2 = $this->SubmitQuery($query3);
@@ -138,7 +138,7 @@ class Friend
     function AcceptFriendRequest($SendRequestUserID, $AcceptRequestFriendID)
     {
         $query = "UPDATE `Friends`
-                  SET `Status`='Accepted',`UpatedOn`= CURRENT_TIMESTAMP
+                  SET `Status`='Accepted',`UpdatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $SendRequestUserID and `FriendID` = $AcceptRequestFriendID";
         $results = $this->SubmitQuery($query);
         //$results->close();
@@ -153,7 +153,7 @@ class Friend
     function DeclineFriendRequest($SendRequestUserID, $DeclineRequestFriendID)
     {
         $query = "UPDATE `Friends`
-                  SET `Status`='Declined',`UpatedOn`= CURRENT_TIMESTAMP
+                  SET `Status`='Declined',`UpdatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $SendRequestUserID and `FriendID` = $DeclineRequestFriendID";
         $results = $this->SubmitQuery($query);
         //$results->close();
@@ -163,13 +163,13 @@ class Friend
     function DeleteFriend($userID,$FriendID)
     {
         $query = "UPDATE `Friends`
-                  SET `Status`='Removed',`UpatedOn`= CURRENT_TIMESTAMP
+                  SET `Status`='Removed',`UpdatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
         $results = $this->SubmitQuery($query);
         $results->close();
 
         $query2 = "UPDATE `Friends`
-                  SET `Status`='Removed',`UpatedOn`= CURRENT_TIMESTAMP
+                  SET `Status`='Removed',`UpdatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $FriendID and `FriendID` = $userID";
         $results2 = $this->SubmitQuery($query2);
         $results2->close();

@@ -140,7 +140,7 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                         <table>
                         <tr>
                         <td>
-                        <input type="text" id="newFriend" size=17></td>
+                        <input type="text" id="newFriend" size="17"></td>
                         <td><button class="w3-button myButton" onclick="AddNewFriend()" title="addFriendButton"><i class="fa fa-plus"></i></button>
                         </td></tr>
                         </table>
