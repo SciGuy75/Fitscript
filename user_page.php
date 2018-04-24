@@ -11,7 +11,7 @@
     background-color: #eee;
     color: #444;
     cursor: pointer;
-    padding: 10px;
+    padding: 10px 10px 5px 10px;
     width: 100%;
     border: none;
     text-align: left;
@@ -28,7 +28,7 @@
     width:50px;
 }
 .panel {
-    padding: 0 0 18px;
+    padding: 0 0 18px 0;
     
     display: none;
     background-color: white;
@@ -122,11 +122,11 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                       echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
                             <div class='panel'>
                                     <div class='w3-half'>
-                                    <button class='w3-button w3-block w3-green w3-section' onclick='AcceptFriendRequest($f->FriendUserID);' title='Accept'>$f->FriendUserID</button>
+                                    <button class='w3-button w3-block w3-green w3-section' onclick='AcceptFriendRequest($f->FriendUserID);' title='Accept'><i class='fa fa-plus'></i></button>
                                     </div>
                                 
                                     <div class='w3-half'>
-                                        <button class='w3-button w3-block w3-red w3-section' title='Delete'><i class='fa fa-remove'></i></button>
+                                        <button class='w3-button w3-block w3-red w3-section' onclick='DeclineFriendRequest($f->FriendUserID)' title='Delete'><i class='fa fa-remove'></i></button>
                                     </div>
                             </div>";
                     }
@@ -262,7 +262,22 @@ function AcceptFriendRequest(fuserID)
       this.responseText;
         }
     };
-  xhttp.open("POST", "AcceptFriendAjax.php?AddedFriend="+fuserID, true);
+  xhttp.open("POST", "AcceptFriendAjax.php?AddedFriend="+fuserID+"&StatusChange=Accept", true);
+  //xhttp.open("POST", "AddFriendAjax.php?newFriend="+x+"&StatusChange=Accept",true);
+  xhttp.send();
+}
+function DeclineFriendRequest(fuserID)
+{
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        location.reload();
+      document.getElementById("Alerts").innerHTML =
+      this.responseText;
+        }
+    };
+  xhttp.open("POST", "AcceptFriendAjax.php?AddedFriend="+fuserID+"&StatusChange=Decline", true);
+  //xhttp.open("POST", "AddFriendAjax.php?newFriend="+x+"&StatusChange=Accept",true);
   xhttp.send();
 }
 function AddNewFriend()

@@ -156,7 +156,7 @@ class Friend
                   SET `Status`='Declined',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $SendRequestUserID and `FriendID` = $DeclineRequestFriendID";
         $results = $this->SubmitQuery($query);
-        $results->close();
+        //$results->close();
         return;
     }
 

@@ -9,8 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $result = $friend->FindFriend($_REQUEST["newFriend"]);
         if(count($result) > 0)
         {
-            $friend->SendFriendRequest($_SESSION['userID'], $result->FriendUserID);
-            echo "Friend Request Sent!".$result->FriendUserID;
+            if($_SESSION['userID'] != $result->FriendUserID)
+            {
+                $friend->SendFriendRequest($_SESSION['userID'], $result->FriendUserID);
+                echo "Friend Request Sent!".$result->FriendUserID;
+            }
+           else echo "You cant send a request to yourself!";
         }
     }
 }
