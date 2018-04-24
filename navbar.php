@@ -10,9 +10,10 @@ echo <<<_end
   <a href="index.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
   <a href="prizeStore.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Store"><i class="fa fa-credit-card"></i></a>
   <a href="user_page.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="User Page"><i class="fa fa-user"></i></a>
+<a class="w3-center">Fitscript</a>
 _end;
     if($_SESSION['isAdmin']){
-        echo '<a href="admin_page.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="User Page"><i class="material-icons">settings</i></a>';
+        echo '<a href="admin_page.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Admin Page"><i class="material-icons">settings</i></a>';
     }
   echo <<<_end
   <a href="logout.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="LogOut"><i class="fa fa-remove"></i></a>
