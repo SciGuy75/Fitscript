@@ -50,32 +50,27 @@ class Friend
                                        $result['steps']);
         }
         $results->close();
-        
         return $FriendList;
     }
 
-    function PendingFriends()
+    function PendingFriends($UserID)
     {
             $query  = "SELECT
-                            f.UserID,
-                            u.UserName,
-                            f.FriendID,
-                            u.FirstName,
-                            u.LastName,
-                            s.steps
-                        from Friends f
-                        join
-                            Users u on u.UserID = f.FriendID
-                        join
-                            Steps s on s.UserID = u.UserID
+                            u.UserName, 
+                            f.UserID, 
+                            u.FirstName, 
+                            u.LastName
+                        FROM `Friends` f 
+                        join 
+                            Users u on u.UserID = f.UserID 
                         WHERE
-                            f.status = 'Pending'";
+                            f.FriendID = $UserID AND 
+                            f.Status = 'Pending'";
             $results = $this->SubmitQuery($query);
             $PendingFriendsList[] =  new Friend("","","","","");
             while($result = $results->fetch_array(MYSQLI_ASSOC))
             {
-                echo $result['FriendID']."bb";
-                $PendingFriendsList[] = new Friend($result['FriendID'], $result['UserName'], $result['FirstName'], $result['LastName'], $result['steps']);
+                $PendingFriendsList[] = new Friend($result['UserID'], $result['UserName'], $result['FirstName'], $result['LastName'],"");
             }
             $results->close();
         return $PendingFriendsList;
@@ -85,14 +80,14 @@ class Friend
     {
         $userID = $_SESSION['userID'];
           $query1  = "Select
-                        u.UserID,
-                        u.UserName,
-                        u.FirstName,
-                        u.LastName
-                    from 
-                        Users u 
-                    where 
-                        u.UserName = '$UserName'";
+                            u.UserID,
+                            u.UserName,
+                            u.FirstName,
+                            u.LastName
+                        from 
+                            Users u 
+                        where 
+                            u.UserName = '$UserName'";
                     
           $FoundUser = $this->SubmitQuery($query1);
 
@@ -124,9 +119,6 @@ class Friend
                       echo "You have sent a request already to them with status $status";
                       return null;
                   }
-
-
-
                 $FoundFriend = new Friend($result['UserID'], $result['UserName'], $result['FirstName'], $result['LastName'], "");
                 $FoundUser->close();
                 return $FoundFriend;
@@ -134,6 +126,7 @@ class Friend
           $FoundUser->close();
           return null;
     }
+
     function SendFriendRequest($userID, $FriendID)
     {
         $query = "INSERT INTO `Friends`(`UserID`, `FriendID`)
@@ -142,33 +135,44 @@ class Friend
         return;
     }
 
-    function AcceptFriendRequest($userID, $FriendID)
+    function AcceptFriendRequest($SendRequestUserID, $AcceptRequestFriendID)
     {
         $query = "UPDATE `Friends`
                   SET `Status`='Accepted',`UpatedOn`= CURRENT_TIMESTAMP
-                  WHERE `UserID` = $userID and `FriendID` = $FriendID";
+                  WHERE `UserID` = $SendRequestUserID and `FriendID` = $AcceptRequestFriendID";
         $results = $this->SubmitQuery($query);
-        $results->close();
+        //$results->close();
+
+        $query2 = "INSERT INTO `Friends`(`UserID`, `FriendID`, `Status`)
+                  VALUES ('$AcceptRequestFriendID', '$SendRequestUserID', 'Accepted')";
+        $results2 = $this->SubmitQuery($query2);
+        //$results2->close();
         return;
     }
 
-    function DeclineFriendRequest()
+    function DeclineFriendRequest($SendRequestUserID, $DeclineRequestFriendID)
     {
         $query = "UPDATE `Friends`
                   SET `Status`='Declined',`UpatedOn`= CURRENT_TIMESTAMP
-                  WHERE `UserID` = $userID and `FriendID` = $FriendID";
+                  WHERE `UserID` = $SendRequestUserID and `FriendID` = $DeclineRequestFriendID";
         $results = $this->SubmitQuery($query);
         $results->close();
         return;
     }
 
-    function DeleteFriend()
+    function DeleteFriend($userID,$FriendID)
     {
         $query = "UPDATE `Friends`
                   SET `Status`='Removed',`UpatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
         $results = $this->SubmitQuery($query);
         $results->close();
+
+        $query2 = "UPDATE `Friends`
+                  SET `Status`='Removed',`UpatedOn`= CURRENT_TIMESTAMP
+                  WHERE `UserID` = $FriendID and `FriendID` = $userID";
+        $results2 = $this->SubmitQuery($query2);
+        $results2->close();
         return;
     }
 

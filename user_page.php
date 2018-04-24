@@ -114,7 +114,7 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
             <h4><p><b>Friend Request</b></p></h4>
             <hr>
             <?php $friend = new Friend(-1,"","",-1,0);
-                $PendingFriendList = $friend->PendingFriends();
+                $PendingFriendList = $friend->PendingFriends($user_class->UserID);
                 if(count($PendingFriendList) > 0)
                 {
                     foreach(array_slice($PendingFriendList,1) as $f)
@@ -122,7 +122,7 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                       echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
                             <div class='panel'>
                                     <div class='w3-half'>
-                                    <button class='w3-button w3-block w3-green w3-section' title='Accept'><i class='fa fa-check'></i></button>
+                                    <button class='w3-button w3-block w3-green w3-section' onclick='AcceptFriendRequest($f->FriendUserID);' title='Accept'>$f->FriendUserID</button>
                                     </div>
                                 
                                     <div class='w3-half'>
@@ -252,7 +252,19 @@ function openNav() {
         x.className = x.className.replace(" w3-show", "");
     }
 }
-
+function AcceptFriendRequest(fuserID)
+{
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        location.reload();
+      document.getElementById("Alerts").innerHTML =
+      this.responseText;
+        }
+    };
+  xhttp.open("POST", "AcceptFriendAjax.php?AddedFriend="+fuserID, true);
+  xhttp.send();
+}
 function AddNewFriend()
 {
     var x = document.getElementById("newFriend").value;
