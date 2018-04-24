@@ -42,10 +42,19 @@
 </style>
 <body class="w3-theme-l5">
 
+
+
+
 <?php
 require_once 'navbar.php';
 require_once 'session_check.php';
 require_once 'User.php';
+
+if (!$_SESSION['isAdmin']){
+	header("Location: user_page.php");
+}
+
+
 $user_class = new user($_SESSION['username']);
 $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
 
