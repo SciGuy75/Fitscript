@@ -14,7 +14,8 @@ class Steps
 	
 	function Steps($UserID, $steps)
 	{
-        $query = "INSERT INTO `Steps`(`UserID`, `Steps`) VALUES ($UserID,$steps";
+        $query = "INSERT INTO `Steps`(`UserID`, `Steps`) 
+                    VALUES ($UserID, '$steps')";
         $this->SubmitQuery($query);
         return;
 	}
