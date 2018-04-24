@@ -3,13 +3,17 @@ class Prizes
 {
     public $prizeID;
     public $prizeName;
-    public $prizeDesc
+    public $prizeDesc;
     public $price;
     public $status;
 
     function __construct($PrizeID,$PrizeName,$PrizeDesc,$Price,$Status)
     {
-		
+		$this->prizeID = $PrizeID;
+        $this->prizeName = $PrizeName;
+        $this->prizeDesc = $PrizeDesc;
+        $this->price = $Price;
+        $this->status = $Status;
     }
     function AddPrize($name, $description, $price, $userID)
     {
@@ -48,12 +52,12 @@ class Prizes
     function GetAllPrizes() 
     {
         $query = "SELECT * FROM `Prizes`";
-        $this->SubmitQuery($query);
+        $results = $this->SubmitQuery($query);
 
         $PrizeList[] =  new Prizes("","","","","");
         while($result = $results->fetch_array(MYSQLI_ASSOC))
         {
-            $PrizeList[] = new Prize(
+            $PrizeList[] = new Prizes(
                             $result['PrizeID'], 
                             $result['Name'], 
                             $result['Description'], 
@@ -62,7 +66,23 @@ class Prizes
         }
         return $PrizeList;
     }
+    function GetAllActivePrizes() 
+    {
+        $query = "SELECT * FROM `Prizes` WHERE Status = 'Active'";
+        $results = $this->SubmitQuery($query);
 
+        $PrizeList[] =  new Prizes("","","","","");
+        while($result = $results->fetch_array(MYSQLI_ASSOC))
+        {
+            $PrizeList[] = new Prizes(
+                            $result['PrizeID'], 
+                            $result['Name'], 
+                            $result['Description'], 
+                            $result['Price'],
+                            $result['Status']);
+        }
+        return $PrizeList;
+    }
     function SubmitQuery($query)
     {
         require 'login.php';
