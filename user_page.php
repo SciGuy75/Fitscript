@@ -190,8 +190,18 @@ $Steps = new Steps();
         Update Today's steps: 
             <input type="number" id="steps" name="steps" min="0" max="15000" /> 
             <button class="w3-button w3-green myButton" onclick="UpdateSteps()"><i class='fa fa-plus'></i></button>
-		<p>Today's Calories Burned: <?php echo ($Steps->GetTodaySteps($user_class->UserID)/20.0) ?></p>
-		
+		<p>Today's Active Calories Burned: <?php echo ($Steps->GetTodaySteps($user_class->UserID)/20.0) ?></p>
+		<p>Today's Passive Calories Burned: <?php 
+		if($user_class->Gender == 'F')
+		{
+			$burned = 655 + (4.3*$user_class->Weight)+(4.7*$user_class->Height)-(4.7*$user_class->Age);	
+		}
+		if($user_class->Gender == 'M')
+		{
+			$burned = 655 + (6.3*$user_class->Weight)+(12.9*$user_class->Height)-(6.8*$user_class->Age);
+		}
+		echo $burned;
+		?></p>
       </div>
 <script>
 
