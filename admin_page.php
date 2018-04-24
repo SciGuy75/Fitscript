@@ -59,8 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['userdelete'])){
     if ($conn->connect_error)
         die($conn->connect_error);
 
-    $query = "DELETE FROM `Users`
-                WHERE `Users`.`UserName` = '$user_to_delete'";
+    $query = "UPDATE `Users` SET `AccountStatus` = null WHERE `Users`.`UserName` = '$user_to_delete'";
 
     $results = $conn->query($query);
     if (!$results) die ("Database access failed: " . $conn->error);
