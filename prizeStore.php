@@ -4,9 +4,10 @@
 <title>Prize Store</title></head>
 
 <?php
-    require_once 'navbar.php';
+
     require_once 'stylesheets.php';
     require_once 'session_check.php';
+    require_once 'navbar.php';
     require_once 'login.php';
     $conn = new mysqli($hn, $un, $pw, $db);
 
