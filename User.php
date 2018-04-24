@@ -110,6 +110,17 @@ class user
             $this->PasswordToken = $row["Password"];
             $this->Birthday = $row["Birthday"];
 
+			//calculates age
+			$inttime = strtotime("now");
+			$b_day = strtotime($row["Birthday"]);
+			$age = 0;
+			while($b_day < $inttime)
+			{
+				$age += 1;
+				$inttime = strtotime("-".$age." years");
+			}
+			$this->age = $age;
+			
             //$this->$JoinDate = $row["JoinDate"];
             //not sure why but date isnt working
             $this->Gender = $row["Gender"];
