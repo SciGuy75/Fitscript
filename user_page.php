@@ -176,7 +176,7 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
         <b></h3>
         <p>Today's Steps: </p>
 		<p>Total Steps: </p>
-        Update Today's steps<input type="number" name="steps" /> <input type="submit" value ="Update Steps" name="submit"/>
+        Update Today's steps<input type="number" name="steps" min="0" max="15000" /> <input type="submit" value ="Update Steps" name="submit"/>
       </div>
     <!-- End Middle Column -->
     </div>
