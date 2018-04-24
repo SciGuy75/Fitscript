@@ -20,10 +20,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']))
     }
 
 
-   $query = "select *
+   $query = "SELECT *
            from Users
            where UserName = '$username' and
-           Password = '$token'";
+           Password = '$token'
+           and AccountStatus = 'Active'"
+           ;
     //echo $query;
     $result = $mysqli->query($query);
     //echo $result;
@@ -102,7 +104,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
           <p><label>Username: </label>
             <input type="text" name="username" value=<?php $username ?>> <br></p>
             <p><label>Password: </label>
-            <input type="password" name="password" value=<?php $password ?>> <br></p> 
+            <input type="password" name="password" value=<?php $password ?>> <br></p>
 
             <p><input type="submit" value="Log in"></p>
 
