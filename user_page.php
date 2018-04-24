@@ -111,7 +111,7 @@ $Steps = new Steps();
                             </div>
                            
                             <div class='w3-half'>
-                                <button class='w3-button w3-block w3-red w3-section' title='Delete'>Delete</button>
+                                <button class='w3-button w3-block w3-red w3-section' onclick='DeleteFriend($f->FriendUserID)' title='Delete'>Delete</button>
                             </div>
                       </div>";
                     }
@@ -286,6 +286,7 @@ function AcceptFriendRequest(fuserID)
   //xhttp.open("POST", "AddFriendAjax.php?newFriend="+x+"&StatusChange=Accept",true);
   xhttp.send();
 }
+
 function UpdateSteps()
 {
     var x = document.getElementById("steps").value;
@@ -326,7 +327,21 @@ function AddNewFriend()
       this.responseText;
         }
     };
-  xhttp.open("POST", "AddFriendAjax.php?newFriend="+x, true);
+  xhttp.open("POST", "AddFriendAjax.php?newFriend="+x+"&Change=Add", true);
+  xhttp.send();
+}
+function DeleteFriend(fuserID)
+{
+    //var x = document.getElementById("newFriend").value;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        //location.reload();
+      document.getElementById("Alerts").innerHTML =
+      this.responseText;
+        }
+    };
+  xhttp.open("POST", "AddFriendAjax.php?DeleteFriendID="+fuserID+"&Change=Delete", true);
   xhttp.send();
 }
 //document.getElementByTag("Button").style.margin = "25px";

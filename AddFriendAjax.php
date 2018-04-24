@@ -3,7 +3,7 @@ session_start();
 require_once 'Friend.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-    if(isset($_REQUEST["newFriend"]))
+    if($_REQUEST["Change"] == "Add")
     {
         $friend = new Friend(-1,"","",-1,0);
         $result = $friend->FindFriend($_REQUEST["newFriend"]);
@@ -16,6 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             }
            else echo "You cant send a request to yourself!";
         }
+    }
+    if($_REQUEST["Change"] == "Delete")
+    {
+        $friend = new Friend(-1,"","",-1,0);
+        $friend->DeleteFriend($_SESSION['userID'], $_REQUEST["DeleteFriendID"]);
+        echo "Deleted Friend ";
     }
 }
 ?>

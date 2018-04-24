@@ -37,7 +37,6 @@ class Friend
                             s.DateUpdated is null)
                     ) as s on s.UserID = u.UserID
                     WHERE
-
                         f.UserID = '$userID' AND f.Status = 'Accepted'";
         $results = $this->SubmitQuery($query);
         $FriendList[] = new Friend("","","","","");
@@ -166,13 +165,13 @@ class Friend
                   SET `Status`='Removed',`UpdatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $userID and `FriendID` = $FriendID";
         $results = $this->SubmitQuery($query);
-        $results->close();
-
+        //$results->close();
+        echo 1;
         $query2 = "UPDATE `Friends`
                   SET `Status`='Removed',`UpdatedOn`= CURRENT_TIMESTAMP
                   WHERE `UserID` = $FriendID and `FriendID` = $userID";
         $results2 = $this->SubmitQuery($query2);
-        $results2->close();
+        //$results2->close();
         return;
     }
 

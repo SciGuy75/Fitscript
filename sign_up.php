@@ -139,7 +139,7 @@ table td {
                 </tr>
                 <tr>
                     <td><label>Height: </label></td>
-                    <td><input type="text" size=3 maxlength=1 max=7 name="heightFeet" value=<?php $heightFeet ?>> ' <input type="text" max=12 size=3 maxlength=2 name="heightInches"> "</td>
+                    <td><input type="text" size=3 maxlength=1 max=7 name="heightFeet" value=<?php $heightFeet ?>> ' <input type="text" max=11 size=3 maxlength=2 name="heightInches"> "</td>
                 </tr>
                 <tr>
                     <td><label>Weight: </label></td>
