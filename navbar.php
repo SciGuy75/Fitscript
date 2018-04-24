@@ -1,3 +1,4 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <?php
 //session_start();
 if(isset($_SESSION['username']))
@@ -9,6 +10,11 @@ echo <<<_end
   <a href="index.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
   <a href="prizeStore.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Store"><i class="fa fa-credit-card"></i></a>
   <a href="user_page.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="User Page"><i class="fa fa-user"></i></a>
+_end;
+    if($_SESSION['isAdmin']){
+        echo '<a href="admin_page.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="User Page"><i class="material-icons">settings</i></a>';
+    }
+  echo <<<_end
   <a href="logout.php" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="LogOut"><i class="fa fa-remove"></i></a>
  </div>
 </div>
@@ -37,7 +43,7 @@ else {
           $loginColor = "w3-white";
           $signUpColor = "w3-hide-small w3-hover-white";
       }
-      else 
+      else
       {
           $homeColor = "w3-white";
           $loginColor = "w3-hide-small w3-hover-white";
