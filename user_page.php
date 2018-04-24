@@ -190,6 +190,8 @@ $Steps = new Steps();
         Update Today's steps: 
             <input type="number" id="steps" name="steps" min="0" max="15000" /> 
             <button class="w3-button w3-green myButton" onclick="UpdateSteps()"><i class='fa fa-plus'></i></button>
+		<p>Today's Calories Burned: <?php echo ($Steps->GetTodaySteps($user_class->UserID)/20.0) ?></p>
+		
       </div>
 <script>
 
