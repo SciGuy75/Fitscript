@@ -77,7 +77,9 @@ $Steps = new Steps();
             <?php
                 $Date = new DateTime($user_class->Birthday);
                 echo $Date->format('m-d-Y');
-            ?>
+            ?></p>
+            <p><i class="fa fa-dollar fa-fw w3-margin-right w3-text-theme"></i> 
+            <?php echo $user_class->Points;?>
             </p>
         </div>
       </div>
@@ -180,13 +182,15 @@ $Steps = new Steps();
                 <?php //echo  $_SESSION['FirstName'] . " " . $_SESSION['LastName'] ?>
                 <?php echo  "Hi, ".$user_class->UserName; ?>
         <b></h3>
-        <p>Today's Steps: <?php echo $Steps->GetTodaySteps($user_class->UserID)?></p>
-        <!-- <canvas id="myStepChart" class="chartjs-render-monitor" width=200 height=200></canvas> -->
+        <p>
+        Today's Steps: <?php echo $Steps->GetTodaySteps($user_class->UserID)?></p>
 
-		<p>Total Steps: <?php echo $Steps->GetAllSteps($user_class->UserID)?></p>
-        Update Today's steps: <input type="number" id="steps" name="steps" min="0" max="15000" /> <button class="w3-button w3-green myButton" onclick="UpdateSteps()"><i class='fa fa-plus'></i></button>
+		<p>
+        Total Steps: <p id="TodaySteps"><?php echo $Steps->GetAllSteps($user_class->UserID)?></p></p>
+        Update Today's steps: 
+            <input type="number" id="steps" name="steps" min="0" max="15000" /> 
+            <button class="w3-button w3-green myButton" onclick="UpdateSteps()"><i class='fa fa-plus'></i></button>
       </div>
-      
 <script>
 
 </script>
@@ -285,15 +289,16 @@ function AcceptFriendRequest(fuserID)
 function UpdateSteps()
 {
     var x = document.getElementById("steps").value;
+    var TodaySteps = document.getElementById("TodaySteps").innerHTML;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         //location.reload();
-      document.getElementById("Alerts").innerHTML =
-      this.responseText;
+            document.getElementById("Alerts").innerHTML =
+            this.responseText;
         }
     };
-    xhttp.open("POST", "UpdateHealth.php?StatusChange=Steps&StepCount="+x, true);
+    xhttp.open("POST", "UpdateHealth.php?StatusChange=Steps&StepCount="+x+"&TodaySteps="+TodaySteps, true);
     //xhttp.open("POST", "AddFriendAjax.php?newFriend="+x+"&StatusChange=Accept",true);
     xhttp.send();
 }

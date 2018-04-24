@@ -3,7 +3,7 @@ class Steps
 {
 	private $Steps;
 	private $date;
-	
+	public $TodayTotal;
 	function __construct(){
 		
 	}
@@ -40,6 +40,7 @@ class Steps
                         Steps.DateUpdated >= NOW() - INTERVAL 1 DAY";
         $results = $this->SubmitQuery($query);
         $TodaySteps = $results->fetch_array(MYSQLI_ASSOC);
+        $this->TodayTotal = $TodaySteps['StepsTotal'];
         return $TodaySteps['StepsTotal'];
     }
 	function SubmitQuery($query)
