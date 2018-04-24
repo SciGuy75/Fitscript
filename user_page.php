@@ -120,15 +120,15 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                     foreach(array_slice($PendingFriendList,1) as $f)
                     {
                       echo "<button class='accordion'>".$f->FriendFirstName." ".$f->FriendLastName."</button>
-                      <div class='panel'>
-                            <div class='w3-half'>
-                            <button class='w3-button w3-block w3-green w3-section' title='Accept'><i class='fa fa-check'></i></button>
-                            </div>
-                           
-                            <div class='w3-half'>
-                                <button class='w3-button w3-block w3-red w3-section' title='Delete'><i class='fa fa-remove'></i></button>
-                            </div>
-                      </div>";
+                            <div class='panel'>
+                                    <div class='w3-half'>
+                                    <button class='w3-button w3-block w3-green w3-section' title='Accept'><i class='fa fa-check'></i></button>
+                                    </div>
+                                
+                                    <div class='w3-half'>
+                                        <button class='w3-button w3-block w3-red w3-section' title='Delete'><i class='fa fa-remove'></i></button>
+                                    </div>
+                            </div>";
                     }
                 }
                else echo "-";
@@ -140,8 +140,8 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
                         <table>
                         <tr>
                         <td>
-                        <input type="text" name="newFriend" size=17></td>
-                        <td><button class="w3-button myButton" title="addFriendButton"><i class="fa fa-plus"></i></button>
+                        <input type="text" id="newFriend" size=17></td>
+                        <td><button class="w3-button myButton" onclick="AddNewFriend()" title="addFriendButton"><i class="fa fa-plus"></i></button>
                         </td></tr>
                         </table>
                   </div>
@@ -158,7 +158,7 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
           <i class="fa fa-remove"></i>
         </span>
         <p><strong>Alerts</strong></p>
-        <p>Alerts go here</p>
+        <p id="Alerts">Alerts go here</p>
       </div>
 
     <!-- End Left Column -->
@@ -212,8 +212,6 @@ $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
         </div>
       </div>
       <br>
-
-    
     <br>
     <!-- End Right Column -->
     </div>
@@ -253,6 +251,20 @@ function openNav() {
     } else {
         x.className = x.className.replace(" w3-show", "");
     }
+}
+
+function AddNewFriend()
+{
+    var x = document.getElementById("newFriend").value;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("Alerts").innerHTML =
+      this.responseText;
+        }
+    };
+  xhttp.open("POST", "AddFriendAjax.php?newFriend="+x, true);
+  xhttp.send();
 }
 //document.getElementByTag("Button").style.margin = "25px";
 var acc = document.getElementsByClassName("accordion");

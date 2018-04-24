@@ -1,7 +1,7 @@
 <?php
 class Friend
 {
-    private $FriendUserID;
+    public $FriendUserID;
     public $FriendUserName;
     public $FriendFirstName;
     public $FriendLastName;
@@ -74,6 +74,7 @@ class Friend
             $PendingFriendsList[] =  new Friend("","","","","");
             while($result = $results->fetch_array(MYSQLI_ASSOC))
             {
+                echo $result['FriendID']."bb";
                 $PendingFriendsList[] = new Friend($result['FriendID'], $result['UserName'], $result['FirstName'], $result['LastName'], $result['steps']);
             }
             $results->close();
@@ -82,31 +83,61 @@ class Friend
 
     function FindFriend($UserName)
     {
-        $query  = "Select
-                        f.UserID,
+        $userID = $_SESSION['userID'];
+          $query1  = "Select
+                        u.UserID,
                         u.UserName,
-                        f.FriendID,
-                        u.FirstName
-                    from Friends f
-                    join
-                        Users u on u.UserID = f.FriendID
-                    where u.UserName = $UserName";
-          $results =  $this->SubmitQuery($query);
-          if(mysql_num_rows($results) > 0)
+                        u.FirstName,
+                        u.LastName
+                    from 
+                        Users u 
+                    where 
+                        u.UserName = '$UserName'";
+                    
+          $FoundUser = $this->SubmitQuery($query1);
+
+          if($FoundUser)
           {
-                while($result = $results->fetch_array(MYSQLI_ASSOC))
-                {
-                    $FoundFriend = new Friend($result['FriendID'], $result['UserName'], $result['FirstName'], $result['LastName'], $result['steps']);
-                }
+                $FoundFriend = new Friend("","","","","");
+                $result = $FoundUser->fetch_array(MYSQLI_ASSOC);
+
+                $FoundUserID =  $result['UserID'];
+                $query2 = "SELECT * 
+                          FROM `Friends`
+                          WHERE Friends.UserID = $FoundUserID and Friends.FriendID = $userID";
+                $Check1 = $this->SubmitQuery($query2);
+                $CheckifExistsInFriendsTable = $Check1->fetch_array(MYSQLI_ASSOC);
+                  if($CheckifExistsInFriendsTable)
+                  {
+                      $status = $CheckifExistsInFriendsTable['Status'];
+                      echo "You have a request already from them with status: $status ";
+                      return null;
+                  }
+                  $query3 = "SELECT * 
+                          FROM `Friends`
+                          WHERE Friends.UserID = $userID and Friends.FriendID = $FoundUserID";
+                  $Check2 = $this->SubmitQuery($query3);
+                  $CheckifExistsInFriendsTableSent = $Check2->fetch_array(MYSQLI_ASSOC);
+                  if($CheckifExistsInFriendsTableSent)
+                  {
+                      $status =$CheckifExistsInFriendsTableSent['Status'];
+                      echo "You have sent a request already to them with status $status";
+                      return null;
+                  }
+
+
+
+                $FoundFriend = new Friend($result['UserID'], $result['UserName'], $result['FirstName'], $result['LastName'], "");
+                $FoundUser->close();
                 return $FoundFriend;
           }
-          $results->close();
+          $FoundUser->close();
           return null;
     }
     function SendFriendRequest($userID, $FriendID)
     {
         $query = "INSERT INTO `Friends`(`UserID`, `FriendID`)
-                  VALUES ($userID, $FriendID)";
+                  VALUES ('$userID', '$FriendID')";
         $results = $this->SubmitQuery($query);
         return;
     }
