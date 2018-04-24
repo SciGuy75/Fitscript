@@ -37,7 +37,7 @@
         echo $result['color'];
 
     ?>
-    " align = 'center'></i><br><input type="button" value="Click Me  to buy for
+    " align = 'center'></i><br><input type="button"  onclick="alert('Hello world!')" value="Click Me  to buy for
     <?php
         echo $result['Price'];
         $result = $results->fetch_array(MYSQLI_ASSOC);
@@ -48,7 +48,7 @@
         echo $result['color'];
 
     ?>
-    " align = 'center'></i><br><input type="button" value="Click Me  to buy for
+    " align = 'center'></i><br><input type="button" onclick="alert('Hello world!')" value="Click Me  to buy for
     <?php
         echo $result['Price'];
         $result = $results->fetch_array(MYSQLI_ASSOC);
@@ -61,7 +61,7 @@
             echo $result['color'];
 
         ?>
-        " align = 'center'></i><br><input type="button" value="Click Me  to buy for
+        " align = 'center'></i><br><input type="button" onclick="alert('Hello world!')" value="Click Me  to buy for
         <?php
             echo $result['Price'];
             $result = $results->fetch_array(MYSQLI_ASSOC);
@@ -72,7 +72,7 @@
             echo $result['color'];
 
         ?>
-        " align = 'center'></i><br><input type="button" value="Click Me  to buy for
+        " align = 'center'></i><br><input type="button" onclick="alert('Hello world!')" value="Click Me  to buy for
         <?php
             echo $result['Price'];
         ?> points
