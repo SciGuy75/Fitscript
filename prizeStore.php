@@ -37,23 +37,21 @@
         echo $result['color'];
 
     ?>
-    " align = 'center'></i><br><input type="button"  onclick="alert('Hello world!')" value="Click Me  to buy for
+    " align = 'center'></i><br><input type="button"  onclick="alert('Prize Purchased!')" value="Click Me  to buy for
     <?php
         echo $result['Price'];
         $result = $results->fetch_array(MYSQLI_ASSOC);
-    ?> points
-"></td>
+    ?> points"/></td>
 <td><i class="fa fa-certificate" style="font-size:200px;color:
     <?php
         echo $result['color'];
 
     ?>
-    " align = 'center'></i><br><input type="button" onclick="alert('Hello world!')" value="Click Me  to buy for
+    " align = 'center'></i><br><input type="button" onclick="alert('Prize Purchased!')" value="Click Me  to buy for
     <?php
         echo $result['Price'];
         $result = $results->fetch_array(MYSQLI_ASSOC);
-    ?> points
-"></td>
+    ?> points"/></td>
 </tr>
 <tr>
     <td><i class="fa fa-certificate" style="font-size:200px;color:
@@ -61,22 +59,20 @@
             echo $result['color'];
 
         ?>
-        " align = 'center'></i><br><input type="button" onclick="alert('Hello world!')" value="Click Me  to buy for
+        " align = 'center'></i><br><input type="button" onclick="alert('Prize Purchased!')" value="Click Me  to buy for
         <?php
             echo $result['Price'];
             $result = $results->fetch_array(MYSQLI_ASSOC);
-        ?> points
-    "></td>
+        ?> points"/></td>
     <td><i class="fa fa-certificate" style="font-size:200px;color:
         <?php
             echo $result['color'];
 
         ?>
-        " align = 'center'></i><br><input type="button" onclick="alert('Hello world!')" value="Click Me  to buy for
+        " align = 'center'></i><br><input type="button" onclick="alert('Prize Purchased!')" value="Click Me  to buy for
         <?php
             echo $result['Price'];
-        ?> points
-    "></td>
+        ?> points"/></td>
 </tr>
 </table>
 </body>
