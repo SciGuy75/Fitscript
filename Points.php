@@ -21,7 +21,20 @@ class Points
         $results2 = $this->SubmitQuery($query2);
         return;
     }
+    function DeletePoints($Points, $userID)
+    {
+        $query = "SELECT Users.Points 
+                    FROM `Users` 
+                    where UserID = $userID";
 
+        $results = $this->SubmitQuery($query);
+        $TotalPoints = $results->fetch_array(MYSQLI_ASSOC);
+        $newTotal = $TotalPoints['Points'] - $Points;
+
+        $query2 = "UPDATE `Users` SET `Points`='$newTotal' WHERE Users.UserID =$userID";
+        $results2 = $this->SubmitQuery($query2);
+        return;
+    }
     function UpdatePointsWithSteps($steps, $UserID, $todaysSteps)
     {
         if($todaysSteps <= 10000)
