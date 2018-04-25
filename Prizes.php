@@ -15,6 +15,7 @@ class Prizes
         $this->price = $Price;
         $this->status = $Status;
     }
+   
     function AddPrize($name, $description, $price, $userID)
     {
         $query = "INSERT INTO `Prizes`(
@@ -24,8 +25,8 @@ class Prizes
                     `AddedBy`, 
                     `UpdatedBy`) 
                 VALUES (
-                    $name,
-                    $description,
+                    '$name',
+                    '$description',
                     $price,
                     $userID,
                     $userID)";
@@ -44,7 +45,7 @@ class Prizes
     function UpdatePrizePrize($PrizeID, $NewPrice, $userID)
     {
         $query = "UPDATE `Prizes` 
-                    SET `Price`=Deactivated,`UpdatedBy`=$userID,`UpdatedOn`=CURRENT_TIMESTAMP
+                    SET `Price`=$NewPrice,`UpdatedBy`=$userID,`UpdatedOn`=CURRENT_TIMESTAMP
                     WHERE PrizeID =$PrizeID";
         $this->SubmitQuery($query);
         return;
@@ -82,6 +83,18 @@ class Prizes
                             $result['Status']);
         }
         return $PrizeList;
+    }
+    function GetPrizeInfo($id) 
+    {
+        $query = "SELECT * FROM `Prizes` WHERE PrizeID = '$id'";
+        $results = $this->SubmitQuery($query);
+
+        $price = 0;
+        while($result = $results->fetch_array(MYSQLI_ASSOC))
+        {
+            $price += $result['Price'];
+        }
+        return $price;
     }
     function SubmitQuery($query)
     {

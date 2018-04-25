@@ -7,6 +7,7 @@
     color: #444;
     cursor: pointer;
     padding: 10px 10px 5px 10px;
+    margin-bottom:10px;
     width: 100%;
     border: none;
     text-align: left;
@@ -18,13 +19,9 @@
 .active, .accordion:hover {
     background-color: #ccc;
 }
-.myButton{
-    height:30px;
-    width:50px;
-}
 .panel {
-    padding: 0 0 18px 0;
-
+    padding: 5px;
+    margin-bottom:10px;
     display: none;
     background-color: white;
     overflow: hidden;
@@ -62,7 +59,7 @@
                                         <button onclick='BuyPrize($f->prizeID, $f->price)' class='w3-button w3-green'>buy</button>
                                     </span>
                               </div> 
-                              <div class='panel'>".$f->prizeDesc."</div>";
+                              <div class='panel'>&nbsp;&nbsp;&nbsp;&nbsp;".$f->prizeDesc."</div>";
                     }
                 }
                 else echo "-";
@@ -88,8 +85,6 @@ function BuyPrize(prizeID, price)
         xhttp.open("POST", "PrizeStoreAjax.php?method=BuyPrize&price="+price, true);
         xhttp.send();
     }
-    
-  
 }
 var acc = document.getElementsByClassName("accordion");
 var i;

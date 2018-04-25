@@ -45,6 +45,22 @@ class user
 
         return  $returnResult;
     }
+    function DeleteAccount($UserToBeRemoved)
+    {
+        require 'login.php';
+        $conn = new mysqli($hn, $un, $pw, $db);
+        if (!$conn) {
+
+            die("Connection failed: " . mysqli_connect_error());
+        }
+        $query = "UPDATE `Users` SET `AccountStatus`='Removed' WHERE Users.UserName = $UserToBeRemoved";
+        $result = $mysqli->query($query);
+        $conn->close();
+        if($result)
+            return "Successfully Deleted";
+        else 
+            return "Error Deleting User";
+    }
     function CreateAccount()
 	{
         require 'login.php';
