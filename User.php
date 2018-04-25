@@ -50,11 +50,10 @@ class user
         require 'login.php';
         $conn = new mysqli($hn, $un, $pw, $db);
         if (!$conn) {
-
             die("Connection failed: " . mysqli_connect_error());
         }
-        $query = "UPDATE `Users` SET `AccountStatus`='Removed' WHERE Users.UserName = $UserToBeRemoved";
-        $result = $mysqli->query($query);
+        $query = "UPDATE `Users` SET `AccountStatus`='Removed' WHERE Users.UserName = '$UserToBeRemoved'";
+        $result = $conn->query($query);
         $conn->close();
         if($result)
             return "Successfully Deleted";
