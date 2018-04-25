@@ -81,7 +81,7 @@ $prize_update_successful = 0;
                             <option value="orange">orange</option>
                             <option value="pink">pink</option>
                             <option value="yellow">yellow</option>
-                            <option value="green">green<</option>
+                            <option value="green">green</option>
                         </select>
                         <br>
                         <button class="w3-button w3-green" onclick="UpdatePrizePrice()">Update</button>
