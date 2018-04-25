@@ -6,44 +6,11 @@
     session_start();
     require_once 'stylesheets.php'
 ?>
- <style>
-.accordion {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 10px 10px 5px 10px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-    transition: 0.4s;
-}
 
-.active, .accordion:hover {
-    background-color: #ccc;
-}
-.myButton{
-    height:30px;
-    width:50px;
-}
-.panel {
-    padding: 0 0 18px 0;
-
-    display: none;
-    background-color: white;
-    overflow: hidden;
-}
-
-
-</style>
 <style>
     html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </style>
 <body class="w3-theme-l5">
-
-
-
 
 <?php
 require_once 'navbar.php';
@@ -53,7 +20,6 @@ require_once 'User.php';
 if (!$_SESSION['isAdmin']){
 	header("Location: user_page.php");
 }
-
 
 $user_class = new user($_SESSION['username']);
 $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
@@ -114,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['PrizeNumber'])){
         <!-- <img src="#" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px"> -->
         <span class="w3-right w3-opacity"></span>
         <h3><b>
-            <?php echo  '<div style="text-align:center">Welcome to the the Admin page,  ' .$user_class->UserName. "</div>"; ?>
+            <?php echo '<div style="text-align:center">Welcome to the the Admin page,  ' .$user_class->UserName. "</div>"; ?>
         </b></h3>
         <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
   		<p><h3>Enter username of account to delete.</h3></p>
@@ -135,11 +101,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['PrizeNumber'])){
                 ?>
             </p>
          </form>
-
-
         </div>
-
-
     <!-- End right Column -->
     </div>
     <div>
@@ -183,20 +145,32 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['PrizeNumber'])){
 
                             }
                         ?>
-
                     </p>
                  </form>
-
-
                 </div>
-
-
-
     </div>
   </div>
 </div>
 
+<script>
 
+function AddPrize()
+{
+    var name = document.getElementById("newPrizeName").value;
+    var desc = document.getElementById("newPrizeDesc").value;
+    var price = document.getElementById("price").value;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        //location.reload();
+      document.getElementById("Alerts").innerHTML =
+      this.responseText;
+        }
+    };
+  xhttp.open("POST", "PrizeStoreAjax.php?method=AddPrize&name="+name+"&desc="+desc+"&price="+price, true);
+  xhttp.send();
+}
+</script>
 
 
 

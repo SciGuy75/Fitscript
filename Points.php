@@ -30,10 +30,9 @@ class Points
         $results = $this->SubmitQuery($query);
         $TotalPoints = $results->fetch_array(MYSQLI_ASSOC);
         $newTotal = $TotalPoints['Points'] - $Points;
-
         $query2 = "UPDATE `Users` SET `Points`='$newTotal' WHERE Users.UserID =$userID";
         $results2 = $this->SubmitQuery($query2);
-        return;
+        return $newTotal;
     }
     function UpdatePointsWithSteps($steps, $UserID, $todaysSteps)
     {

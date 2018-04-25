@@ -29,40 +29,26 @@
     background-color: white;
     overflow: hidden;
 }
-
-
 </style>
 <title>Prize Store</title>
 
 <?php
     require_once 'Prizes.php';
+    require_once 'User.php';
     require_once 'stylesheets.php';
-    require_once 'session_check.php';
+    //require_once 'session_check.php';
     require_once 'navbar.php';
-    //require_once 'login.php';
-    //$conn = new mysqli($hn, $un, $pw, $db);
-
-    // if ($conn->connect_error)
-    //     die($conn->connect_error);
-    // $query = "SELECT
-    //             p.Price,
-    //             p.color
-    //         FROM Prizes p";
-
-    // $results = $conn->query($query);
-    // if (!$results) die ("Database access failed: " . $conn->error);
-    // $conn->close();
-    // $result = $results->fetch_array(MYSQLI_ASSOC);
+    $user_class = new user($_SESSION['username']);
+    $user_class->GetInfo($user_class->UserName, $_SESSION['pswd_token']);
 ?>
 </head>
 <body class = "w3-theme">
 <div class="w3-container w3-content" style="max-width:700px;margin-top:80px">
 <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
   <h2 align = center>Script Store</h2>
-  <p align = center>Earned a prize? Redeem it here!!</p>
+  <p align = center>Points: <span id="Points"><?php echo $user_class->Points?></span></p>
 
 <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-
             <?php 
                 $Prizes = new Prizes("","","","","");
                 $ActivePrizeList = $Prizes->GetAllActivePrizes();
@@ -70,10 +56,12 @@
                 {
                     foreach(array_slice($ActivePrizeList,1) as $f)
                     {
-                        echo "<div class='accordion'>
-                                    ".$f->prizeName.": ".$f->price."
-                                    <button class='w3-button w3-green'>buy prize</button>
-                              </div>
+                        echo "<div class='w3-container w3-round accordion'>
+                                    <span style='margin-top:50px'>".$f->prizeName.": ".$f->price."</span>
+                                    <span style='float:right'>
+                                        <button onclick='BuyPrize($f->prizeID, $f->price)' class='w3-button w3-green'>buy</button>
+                                    </span>
+                              </div> 
                               <div class='panel'>".$f->prizeDesc."</div>";
                     }
                 }
@@ -82,21 +70,26 @@
 </div></div>
 </body>
 <script>
-function AddPrize()
+function BuyPrize(prizeID, price)
 {
-    var name = document.getElementById("newPrizeName").value;
-    var desc = document.getElementById("newPrizeDesc").value;
-    var price = document.getElementById("price").value;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        //location.reload();
-      document.getElementById("Alerts").innerHTML =
-      this.responseText;
-        }
-    };
-  xhttp.open("POST", "PrizeStoreAjax.php?name="+name+"&desc="+desc+"&price="+price, true);
-  xhttp.send();
+    var UsersPoints = document.getElementById("Points").innerHTML;
+    if(UsersPoints < price)
+    {
+        alert("Not enough points! Go Walking!");
+    }
+    else{
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+  
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("Points").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("POST", "PrizeStoreAjax.php?method=BuyPrize&price="+price, true);
+        xhttp.send();
+    }
+    
+  
 }
 var acc = document.getElementsByClassName("accordion");
 var i;
